@@ -3,7 +3,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn.functional import softmax
 import torch.distributed as dist
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+try:
+	from sklearn.preprocessing import LabelEncoder
+except Exception:
+	LabelEncoder = None
 import numpy as np
 from torch.nn.utils.rnn import pad_sequence
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
@@ -28,11 +31,14 @@ class SP_Encoder(nn.Module):
 	Head for intergrating the scanpath module.
 	"""
 
-	def __init__(self, config):
+	def __init__(self, config, scanpath_source="eyettention"):
 		super().__init__()
-		self.sp_gen_model = Eyettention(config)
+		self.scanpath_source = (scanpath_source or "eyettention").lower()
+		self.sp_gen_model = None
+		if self.scanpath_source == "eyettention":
+			self.sp_gen_model = Eyettention(config)
 		#self.sp_gen_model.load_state_dict(torch.load('Eyettention_english.pth', map_location='cpu'))
-		self.sp_gen_model.load_state_dict(model_zoo.load_url('https://github.com/aeye-lab/ACL-GazeSupervisedLM/releases/download/v1.0/bert_Eyettention_english.pth', map_location='cpu'))
+			self.sp_gen_model.load_state_dict(model_zoo.load_url('https://github.com/aeye-lab/ACL-GazeSupervisedLM/releases/download/v1.0/bert_Eyettention_english.pth', map_location='cpu'))
 		# #freeze the parameters in scanpath generation model
 		# for param in self.sp_gen_model.parameters():
 		# 	param.requires_grad = False
@@ -43,6 +49,30 @@ class SP_Encoder(nn.Module):
 							bidirectional=False)
 
 		self.dropout = nn.Dropout(0.1)
+
+	def _infer_sn_len_from_word_ids(self, word_ids):
+		# ET_word_ids already use the repo convention 0 -> CLS/start,
+		# 1..sn_len -> lexical words, sn_len + 1 -> SEP/end.
+		return torch.nan_to_num(word_ids, nan=0.0).amax(dim=1).to(torch.float64) - 1
+
+	def _prepare_measured_word_scanpath(self, measured_word_ids, measured_sp_len, sn_len):
+		if measured_word_ids is None or measured_sp_len is None:
+			raise ValueError("Measured scanpath mode requires measured_word_ids and measured_sp_len.")
+
+		word_pos = measured_word_ids.view((-1, measured_word_ids.size(-1))).clone().to(torch.float64)
+		measured_sp_len = measured_sp_len.view((-1,)).to(torch.int64)
+		end_token = (sn_len.reshape(-1, 1) + 1).to(word_pos.device).to(word_pos.dtype)
+
+		# The aligned dataset provides only the real scanpath positions. We pad the
+		# remainder with the end-of-sentence sentinel so the original downstream
+		# trimming logic can stop at the first end token unchanged.
+		for row_idx in range(word_pos.shape[0]):
+			valid_len = int(measured_sp_len[row_idx].item())
+			valid_len = max(1, min(valid_len, word_pos.shape[1]))
+			word_pos[row_idx, valid_len:] = end_token[row_idx]
+			word_pos[row_idx, valid_len - 1] = end_token[row_idx]
+
+		return word_pos
 
 	def convert_word_pos_seq_to_token_pos_seq(self,
 												word_pos,
@@ -114,7 +144,7 @@ class SP_Encoder(nn.Module):
 
 		return gaze_token_pos, sp_len
 
-	def SP_Gen(self, input_ids, attention_mask, token_type_ids, word_ids, word_len, LM_word_ids):
+	def SP_Gen(self, input_ids, attention_mask, token_type_ids, word_ids, word_len, LM_word_ids, measured_word_ids=None, measured_sp_len=None, scanpath_source="eyettention", return_debug_dict=False):
 		batch_size = input_ids.size(0)
 		# Number of sentences in one instance
 		# 2: pair instance;
@@ -127,27 +157,94 @@ class SP_Encoder(nn.Module):
 			token_type_ids = token_type_ids.view((-1, token_type_ids.size(-1))) # (bs * num_sent, len)
 		word_ids = word_ids.view((-1, word_ids.size(-1))) # (bs * num_sent, len)
 		word_len = word_len.view((-1, word_len.size(-1))) # (bs * num_sent, len)
+		scanpath_source = (scanpath_source or "eyettention").lower()
 
-		gaze_pos, sn_len = self.sp_gen_model(sn_emd = input_ids,
-												sn_mask = attention_mask,
-												word_ids_sn = word_ids,
-												sn_word_len = word_len,
-												le = self.sp_gen_model.le)
+		if scanpath_source == "measured":
+			# In measured-scanpath mode, we bypass Eyettention and inject externally aligned
+			# word-level fixation positions. The rest of the pipeline stays unchanged: the
+			# model still converts word positions to token/subtoken positions and pools them
+			# with the original GRU encoder.
+			sn_len = self._infer_sn_len_from_word_ids(word_ids).to(input_ids.device)
+			gaze_pos = self._prepare_measured_word_scanpath(
+				measured_word_ids=measured_word_ids,
+				measured_sp_len=measured_sp_len,
+				sn_len=sn_len,
+			).to(input_ids.device)
+			debug_dict = {} if return_debug_dict else None
+			if return_debug_dict:
+				debug_dict["scanpath_source"] = scanpath_source
+				debug_dict["pred_pos_word_input"] = gaze_pos.clone()
+				debug_dict["measured_sp_len"] = measured_sp_len.view((-1,))
+		elif scanpath_source == "eyettention":
+			if self.sp_gen_model is None:
+				raise ValueError("Eyettention weights were not initialized because scanpath_source was set to measured.")
+			# Eyettention generates the scanpath at the word level. The sequence starts
+			# from the synthetic CLS/start location and later predicts SEP by emitting
+			# sn_len + 1 for the corresponding sentence.
+			if return_debug_dict:
+				gaze_pos, sn_len, debug_dict = self.sp_gen_model(sn_emd = input_ids,
+								sn_mask = attention_mask,
+								word_ids_sn = word_ids,
+								sn_word_len = word_len,
+								le = self.sp_gen_model.le,
+								return_debug_dict = True)
+				debug_dict["scanpath_source"] = scanpath_source
+			else:
+				gaze_pos, sn_len = self.sp_gen_model(sn_emd = input_ids,
+							sn_mask = attention_mask,
+							word_ids_sn = word_ids,
+							sn_word_len = word_len,
+							le = self.sp_gen_model.le)
+		else:
+			raise ValueError(f"Unsupported scanpath_source: {scanpath_source}")
 
 		gaze_pos = gaze_pos.view((batch_size, num_sent, gaze_pos.size(-1))) # (bs, num_sent, hidden)
 		sn_len = sn_len.view((batch_size, num_sent)) # (bs, num_sent)
 
-
+		# Convert the scanpath from word indices into LM token/subtoken indices.
+		# Refixations keep the same word index; regressions jump to a smaller word
+		# index and therefore map back to earlier token spans.
 		gaze_token_pos, sp_len = self.convert_word_pos_seq_to_token_pos_seq(word_pos=gaze_pos,
-																			sn_len=sn_len,
-																			word_ids_sn=LM_word_ids)
+									sn_len=sn_len,
+									word_ids_sn=LM_word_ids)
+
+		if return_debug_dict:
+			debug_dict["pred_pos_word"] = gaze_pos
+			debug_dict["sn_len"] = sn_len
+			debug_dict["gaze_token_pos"] = gaze_token_pos
+			debug_dict["sp_len"] = sp_len
+			return gaze_token_pos, sp_len, debug_dict
 
 		return gaze_token_pos, sp_len
 
-	def forward(self, sp_pooler_output, input_ids, attention_mask, token_type_ids, word_ids, word_len, LM_word_ids):
-		gaze_token_pos, sp_len = self.SP_Gen(input_ids, attention_mask, token_type_ids, word_ids, word_len, LM_word_ids)
+	def forward(self, sp_pooler_output, input_ids, attention_mask, token_type_ids, word_ids, word_len, LM_word_ids, measured_word_ids=None, measured_sp_len=None, scanpath_source="eyettention", return_debug_dict=False):
+		if return_debug_dict:
+			gaze_token_pos, sp_len, debug_dict = self.SP_Gen(
+				input_ids,
+				attention_mask,
+				token_type_ids,
+				word_ids,
+				word_len,
+				LM_word_ids,
+				measured_word_ids=measured_word_ids,
+				measured_sp_len=measured_sp_len,
+				scanpath_source=scanpath_source,
+				return_debug_dict=True,
+			)
+		else:
+			gaze_token_pos, sp_len = self.SP_Gen(
+				input_ids,
+				attention_mask,
+				token_type_ids,
+				word_ids,
+				word_len,
+				LM_word_ids,
+				measured_word_ids=measured_word_ids,
+				measured_sp_len=measured_sp_len,
+				scanpath_source=scanpath_source,
+			)
 		#retrieve features according to scanpath ordering,
-		#Note: gather can’t differentiate the index->gaze_token_pos variable
+		#Note: gather can?t differentiate the index->gaze_token_pos variable
 		#x_sp = torch.gather(sp_pooler_output, 1, gaze_token_pos.unsqueeze(2).repeat(1,1,768).to(torch.int64))
 		#instead
 		#make own one-hot encoding so that it is differentiable during training
@@ -159,7 +256,17 @@ class SP_Encoder(nn.Module):
 		x_sp = torch.einsum('bij,bki->bkj', sp_pooler_output, one_hot.float())
 		x_sp = self.dropout(x_sp)
 		x_sp_packed = pack_padded_sequence(x_sp, sp_len.cpu(), batch_first=True, enforce_sorted=False)
-		x_sp_packed, last_hidden = self.gru(x_sp_packed, sp_pooler_output[:,0,:].unsqueeze(0).contiguous())
+		gru_packed_output, last_hidden = self.gru(x_sp_packed, sp_pooler_output[:,0,:].unsqueeze(0).contiguous())
+
+		if return_debug_dict:
+			gru_output, _ = pad_packed_sequence(gru_packed_output, batch_first=True, total_length=x_sp.shape[1])
+			debug_dict["sp_pooler_output_shape"] = tuple(sp_pooler_output.shape)
+			debug_dict["scanpath_selected_hidden_states_shape"] = tuple(x_sp.shape)
+			debug_dict["gru_output_shape"] = tuple(gru_output.shape)
+			debug_dict["scanpath_last_hidden_shape"] = tuple(last_hidden[0,:].shape)
+			debug_dict["scanpath_selected_hidden_states"] = x_sp.detach()
+			debug_dict["gru_output"] = gru_output.detach()
+			return last_hidden[0,:], debug_dict
 
 		return last_hidden[0,:]
 
@@ -249,6 +356,9 @@ def aug_forward(orig_self,
 					ET_position_ids=None,
 					ET_word_ids=None,
 					ET_word_len=None,
+					measured_word_ids=None,
+					measured_sp_len=None,
+					scanpath_source="eyettention",
 				):
 
 	return_dict = return_dict if return_dict is not None else orig_self.config.use_return_dict
@@ -284,6 +394,9 @@ def aug_forward(orig_self,
 							word_ids=ET_word_ids,
 							word_len=ET_word_len,
 							LM_word_ids=word_ids,
+							measured_word_ids=measured_word_ids,
+							measured_sp_len=measured_sp_len,
+							scanpath_source=scanpath_source,
 							)
 
 	sp_pooled_output = orig_self.bert.pooler(sp_pooler_output.unsqueeze(1))
@@ -333,7 +446,7 @@ class Gazesup_BERTForSequenceClassification(BertPreTrainedModel):
 
 	def add_sp_func(self, config):
 		#for integrating the scanpath module
-		self.sp_encoder = SP_Encoder(config)
+		self.sp_encoder = SP_Encoder(config, scanpath_source=getattr(self.model_args, "scanpath_source", "eyettention"))
 
 	def forward(self,
 		input_ids=None,
@@ -354,10 +467,15 @@ class Gazesup_BERTForSequenceClassification(BertPreTrainedModel):
 		ET_position_ids=None,
 		ET_word_ids=None,
 		ET_word_len=None,
+		measured_word_ids=None,
+		measured_sp_len=None,
+		scanpath_source=None,
 	):
 		if self.training:
 			#add gaze module
 			add_gaze=True
+
+		active_scanpath_source = scanpath_source or getattr(self.model_args, "scanpath_source", "eyettention")
 
 		if add_gaze:
 			return aug_forward(self, self.bert,
@@ -378,6 +496,9 @@ class Gazesup_BERTForSequenceClassification(BertPreTrainedModel):
 				ET_position_ids=ET_position_ids,
 				ET_word_ids=ET_word_ids,
 				ET_word_len=ET_word_len,
+				measured_word_ids=measured_word_ids,
+				measured_sp_len=measured_sp_len,
+				scanpath_source=active_scanpath_source,
 			)
 		else:
 			return orig_forward(self, self.bert,
@@ -402,6 +523,8 @@ class Eyettention(nn.Module):
 		self.window_width = 1
 		self.hidden_size = 128
 
+		if LabelEncoder is None:
+			raise ImportError("Eyettention requires scikit-learn to be importable, but it is unavailable in this environment.")
 		#Encode the label into interger categories, setting the exclusive category 'cf["max_sn_len"]-1' as the end sign
 		self.le = LabelEncoder()
 		self.le.fit(np.append(np.arange(-self.used_sn_len+3, self.used_sn_len-1), self.used_sn_len-1))
@@ -411,9 +534,9 @@ class Eyettention(nn.Module):
 		encoder_config.output_hidden_states=True
 		 # initiate Bert with pre-trained weights
 		print("keeping Bert with pre-trained weights")
-		if self.model_pretrained.startswith('bert'):
+		if encoder_config.model_type == 'bert' or self.model_pretrained.startswith('bert'):
 			self.bert = BertModel.from_pretrained(self.model_pretrained, config = encoder_config)
-		elif self.model_pretrained.startswith('RoBERTa'):
+		elif encoder_config.model_type == 'roberta' or self.model_pretrained.startswith('RoBERTa') or self.model_pretrained.startswith('roberta'):
 			self.bert = RobertaModel.from_pretrained(self.model_pretrained, config = encoder_config)
 		self.bert.eval()
 		#freeze the parameters in Bert model
@@ -551,7 +674,7 @@ class Eyettention(nn.Module):
 		result = self.decoder_dense5(hc)                   # [batch, dec_o_dim]
 		return result
 
-	def decode(self, sn_mask, word_enc_out, sn_emd, word_ids_sn, le):
+	def decode(self, sn_mask, word_enc_out, sn_emd, word_ids_sn, le, return_debug_dict=False):
 		sn_len = (torch.sum(sn_mask, axis=1)-2).float()
 		# Initialize hidden state and cell state with zeros,
 		hn = torch.zeros(8, sn_mask.shape[0], self.hidden_size).to(sn_mask.device)
@@ -565,6 +688,10 @@ class Eyettention(nn.Module):
 		hx7, cx7 = hn[6,:,:], hc[6,:,:]
 		hx8, cx8 = hn[7,:,:], hc[7,:,:]
 
+		# Word-level scanpath decoding:
+		# - output_pos stores word indices, not token/subtoken indices.
+		# - the first element is the synthetic start location aligned with CLS (0).
+		# - the decoder stops once it emits sn_len + 1, the SEP/end position.
 		#use CLS token (101) as start token
 		dec_in_start = (torch.ones(sn_mask.shape[0]) * 101).long().to(sn_mask.device)
 		dec_emb_in = self.bert.embeddings.word_embeddings(dec_in_start) # [batch, emb_dim]
@@ -616,7 +743,9 @@ class Eyettention(nn.Module):
 			#print(sampled_pred_loc.grad_fn)
 			sac_length_class = torch.tensor(le.classes_).to(sn_mask.device).repeat(sn_mask.shape[0],1)
 			sampled_sac_length = (sac_length_class * sampled_pred_loc).sum(1)
-			#add saccade length -> predicted fixation word index
+			# Add the sampled saccade length to the previous fixation to obtain the
+			# next scanpath position at the word level.
+			# Negative jump: regression. Zero jump: refixation. Positive jump: forward.
 			pred_word_index = (output_pos[:, -1] + sampled_sac_length)
 
 			#check the output word index for validity
@@ -642,11 +771,32 @@ class Eyettention(nn.Module):
 			dec_emb_in = self.LayerNorm(dec_emb_in)
 			dec_emb_in = self.embedding_dropout(dec_emb_in)
 
+		if return_debug_dict:
+			return output_pos, sn_len, {
+				"pred_pos_word": output_pos,
+				"sn_len": sn_len,
+				"sn_mask_word": sn_mask,
+				"word_enc_out": word_enc_out,
+			}
+
 		return output_pos, sn_len                         # [batch, step, dec_o_dim]
 
 
-	def forward(self, sn_emd, sn_mask, word_ids_sn, sn_word_len, le):
+	def forward(self, sn_emd, sn_mask, word_ids_sn, sn_word_len, le, return_debug_dict=False):
 		x, sn_mask_word = self.encode(sn_emd, sn_mask, word_ids_sn, sn_word_len)                  # [batch, step, units], [batch, units]
+		if return_debug_dict:
+			pred_pos, sn_len, debug_dict = self.decode(
+				sn_mask_word,
+				x,
+				sn_emd,
+				word_ids_sn,
+				le,
+				return_debug_dict=True,
+			)
+			debug_dict["sn_mask_word"] = sn_mask_word
+			debug_dict["word_enc_out"] = x
+			return pred_pos, sn_len, debug_dict
+
 		pred_pos, sn_len = self.decode(sn_mask_word, x, sn_emd, word_ids_sn, le)    # [batch, step, dec_o_dim]
 		return pred_pos, sn_len
 

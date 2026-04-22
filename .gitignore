@@ -1,3 +1,22 @@
 .venv/
 **/__pycache__/
 **/result/
+
+# ACL-GazeSupervisedLM: keep source, ignore local artifacts and experiment outputs
+/ACL-GazeSupervisedLM/..venvScriptspython.exe
+/ACL-GazeSupervisedLM/Pasos/
+/ACL-GazeSupervisedLM/debug_*.py
+/ACL-GazeSupervisedLM/debug_*.jsonl
+/ACL-GazeSupervisedLM/dump_eyettention_examples.py
+/ACL-GazeSupervisedLM/comando.txt
+/ACL-GazeSupervisedLM/RESUMEN_AMPLIO_PROYECTO.txt
+/ACL-GazeSupervisedLM/.pytest_cache/
+/ACL-GazeSupervisedLM/.mypy_cache/
+/ACL-GazeSupervisedLM/.ruff_cache/
+/ACL-GazeSupervisedLM/**/checkpoint-*/
+/ACL-GazeSupervisedLM/**/checkpoint_epoch_*/
+/ACL-GazeSupervisedLM/**/checkpoint_final/
+/ACL-GazeSupervisedLM/**/best_checkpoint/
+/ACL-GazeSupervisedLM/**/checkpoint_smoke/
+/ACL-GazeSupervisedLM/**/export_backbone_hf/
+/ACL-GazeSupervisedLM/**/cache/

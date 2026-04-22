@@ -28,11 +28,14 @@ class SP_Encoder(nn.Module):
 	Head for intergrating the scanpath module.
 	"""
 
-	def __init__(self, config):
+	def __init__(self, config, scanpath_source="eyettention"):
 		super().__init__()
-		self.sp_gen_model = Eyettention(config)
+		self.scanpath_source = (scanpath_source or "eyettention").lower()
+		self.sp_gen_model = None
+		if self.scanpath_source == "eyettention":
+			self.sp_gen_model = Eyettention(config)
 		#self.sp_gen_model.load_state_dict(torch.load('roberta_Eyettention_english.pth', map_location='cpu'))
-		self.sp_gen_model.load_state_dict(model_zoo.load_url('https://github.com/aeye-lab/ACL-GazeSupervisedLM/releases/download/v1.0/roberta_Eyettention_english.pth', map_location='cpu'))
+			self.sp_gen_model.load_state_dict(model_zoo.load_url('https://github.com/aeye-lab/ACL-GazeSupervisedLM/releases/download/v1.0/roberta_Eyettention_english.pth', map_location='cpu'))
 
 		# #freeze the parameters in scanpath generation model
 		# for param in self.sp_gen_model.parameters():
@@ -45,6 +48,30 @@ class SP_Encoder(nn.Module):
 							bidirectional=False)
 
 		self.dropout = nn.Dropout(0.1)
+
+	def _infer_sn_len_from_word_ids(self, word_ids):
+		# ET_word_ids already use the repo convention 0 -> CLS/start,
+		# 1..sn_len -> lexical words, sn_len + 1 -> SEP/end.
+		return torch.nan_to_num(word_ids, nan=0.0).amax(dim=1).to(torch.float64) - 1
+
+	def _prepare_measured_word_scanpath(self, measured_word_ids, measured_sp_len, sn_len):
+		if measured_word_ids is None or measured_sp_len is None:
+			raise ValueError("Measured scanpath mode requires measured_word_ids and measured_sp_len.")
+
+		word_pos = measured_word_ids.view((-1, measured_word_ids.size(-1))).clone().to(torch.float64)
+		measured_sp_len = measured_sp_len.view((-1,)).to(torch.int64)
+		end_token = (sn_len.reshape(-1, 1) + 1).to(word_pos.device).to(word_pos.dtype)
+
+		# The aligned dataset provides only the real scanpath positions. We pad the
+		# remainder with the end-of-sentence sentinel so the original downstream
+		# trimming logic can stop at the first end token unchanged.
+		for row_idx in range(word_pos.shape[0]):
+			valid_len = int(measured_sp_len[row_idx].item())
+			valid_len = max(1, min(valid_len, word_pos.shape[1]))
+			word_pos[row_idx, valid_len:] = end_token[row_idx]
+			word_pos[row_idx, valid_len - 1] = end_token[row_idx]
+
+		return word_pos
 
 	def convert_word_pos_seq_to_token_pos_seq(self,
 												word_pos,
@@ -113,7 +140,7 @@ class SP_Encoder(nn.Module):
 		gaze_token_pos = pad_sequence(gaze_token_pos, batch_first=True, padding_value=set_max_seq_length-1)
 		return gaze_token_pos, sp_len
 
-	def SP_Gen(self, input_ids, attention_mask, token_type_ids, word_ids, word_len, LM_word_ids):
+	def SP_Gen(self, input_ids, attention_mask, token_type_ids, word_ids, word_len, LM_word_ids, measured_word_ids=None, measured_sp_len=None, scanpath_source="eyettention"):
 		batch_size = input_ids.size(0)
 		# Number of sentences in one instance
 		# 2: pair instance;
@@ -126,26 +153,51 @@ class SP_Encoder(nn.Module):
 			token_type_ids = token_type_ids.view((-1, token_type_ids.size(-1))) # (bs * num_sent, len)
 		word_ids = word_ids.view((-1, word_ids.size(-1))) # (bs * num_sent, len)
 		word_len = word_len.view((-1, word_len.size(-1))) # (bs * num_sent, len)
+		scanpath_source = (scanpath_source or "eyettention").lower()
 
-		gaze_pos, sn_len = self.sp_gen_model(sn_emd = input_ids,
-												sn_mask = attention_mask,
-												word_ids_sn = word_ids,
-												sn_word_len = word_len,
-												le = self.sp_gen_model.le)
+		if scanpath_source == "measured":
+			# In measured-scanpath mode, we bypass Eyettention and inject externally aligned
+			# word-level fixation positions. The rest of the pipeline stays unchanged: the
+			# model still converts word positions to token/subtoken positions and pools them
+			# with the original GRU encoder.
+			sn_len = self._infer_sn_len_from_word_ids(word_ids).to(input_ids.device)
+			gaze_pos = self._prepare_measured_word_scanpath(
+				measured_word_ids=measured_word_ids,
+				measured_sp_len=measured_sp_len,
+				sn_len=sn_len,
+			).to(input_ids.device)
+		elif scanpath_source == "eyettention":
+			if self.sp_gen_model is None:
+				raise ValueError("Eyettention weights were not initialized because scanpath_source was set to measured.")
+			gaze_pos, sn_len = self.sp_gen_model(sn_emd = input_ids,
+							sn_mask = attention_mask,
+							word_ids_sn = word_ids,
+							sn_word_len = word_len,
+							le = self.sp_gen_model.le)
+		else:
+			raise ValueError(f"Unsupported scanpath_source: {scanpath_source}")
 
 		gaze_pos = gaze_pos.view((batch_size, num_sent, gaze_pos.size(-1))) # (bs, num_sent, hidden)
 		sn_len = sn_len.view((batch_size, num_sent)) # (bs, num_sent)
 
-
 		gaze_token_pos, sp_len = self.convert_word_pos_seq_to_token_pos_seq(word_pos=gaze_pos,
-																			sn_len=sn_len,
-																			word_ids_sn=LM_word_ids)
+									sn_len=sn_len,
+									word_ids_sn=LM_word_ids)
 
 		return gaze_token_pos, sp_len
 
-	def forward(self, sp_pooler_output, input_ids, attention_mask, token_type_ids, word_ids, word_len, LM_word_ids):
-		gaze_token_pos, sp_len = self.SP_Gen(input_ids, attention_mask, token_type_ids, word_ids, word_len, LM_word_ids)
-
+	def forward(self, sp_pooler_output, input_ids, attention_mask, token_type_ids, word_ids, word_len, LM_word_ids, measured_word_ids=None, measured_sp_len=None, scanpath_source="eyettention"):
+		gaze_token_pos, sp_len = self.SP_Gen(
+			input_ids,
+			attention_mask,
+			token_type_ids,
+			word_ids,
+			word_len,
+			LM_word_ids,
+			measured_word_ids=measured_word_ids,
+			measured_sp_len=measured_sp_len,
+			scanpath_source=scanpath_source,
+		)
 		#retrieve features according to scanpath ordering,
 		#Note: gather can’t differentiate the index->gaze_token_pos variable
 		#x_sp = torch.gather(sp_pooler_output, 1, gaze_token_pos.unsqueeze(2).repeat(1,1,768).to(torch.int64))
@@ -248,6 +300,9 @@ def aug_forward(orig_self,
 					ET_position_ids=None,
 					ET_word_ids=None,
 					ET_word_len=None,
+					measured_word_ids=None,
+					measured_sp_len=None,
+					scanpath_source="eyettention",
 				):
 
 	return_dict = return_dict if return_dict is not None else orig_self.config.use_return_dict
@@ -279,6 +334,9 @@ def aug_forward(orig_self,
 							word_ids=ET_word_ids,
 							word_len=ET_word_len,
 							LM_word_ids=word_ids,
+							measured_word_ids=measured_word_ids,
+							measured_sp_len=measured_sp_len,
+							scanpath_source=scanpath_source,
 							)
 	sp_logits = orig_self.classifier(sp_sequence_output.unsqueeze(1))
 
@@ -323,7 +381,7 @@ class Gazesup_RobertaForSequenceClassification(RobertaPreTrainedModel):
 
 	def add_sp_func(self, config):
 		#for integrating the scanpath module
-		self.sp_encoder = SP_Encoder(config)
+		self.sp_encoder = SP_Encoder(config, scanpath_source=getattr(self.model_args, "scanpath_source", "eyettention"))
 
 	def forward(self,
 		input_ids=None,
@@ -344,10 +402,15 @@ class Gazesup_RobertaForSequenceClassification(RobertaPreTrainedModel):
 		ET_position_ids=None,
 		ET_word_ids=None,
 		ET_word_len=None,
+		measured_word_ids=None,
+		measured_sp_len=None,
+		scanpath_source=None,
 	):
 		if self.training:
 			#add gaze module
 			add_gaze=True
+
+		active_scanpath_source = scanpath_source or getattr(self.model_args, "scanpath_source", "eyettention")
 
 		if add_gaze:
 			return aug_forward(self, self.roberta,
@@ -368,6 +431,9 @@ class Gazesup_RobertaForSequenceClassification(RobertaPreTrainedModel):
 				ET_position_ids=ET_position_ids,
 				ET_word_ids=ET_word_ids,
 				ET_word_len=ET_word_len,
+				measured_word_ids=measured_word_ids,
+				measured_sp_len=measured_sp_len,
+				scanpath_source=active_scanpath_source,
 			)
 		else:
 			return orig_forward(self, self.roberta,

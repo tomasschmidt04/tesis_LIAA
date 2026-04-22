@@ -59,6 +59,13 @@ from transformers.utils.versions import require_version
 from trainers import OurTrainer
 from Gazesup_bert_model import Gazesup_BERTForSequenceClassification
 from utils import count_parameters, remove_punctuation_split
+from measured_scanpath_utils import (
+	CUSTOM_ALIGNED_SCANPATH_TASK,
+	build_measured_single_sentence_features,
+	infer_custom_label_schema,
+	load_measured_scanpath_dataset,
+	normalize_scanpath_source,
+)
 
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
@@ -78,6 +85,7 @@ task_to_keys = {
 	"wnli": ("sentence1", "sentence2"),
 	"trec": ("text", None),
 	"ag_news": ("text", None),
+	CUSTOM_ALIGNED_SCANPATH_TASK: ("text", None),
 }
 
 
@@ -199,6 +207,18 @@ class DataTrainingArguments:
 		default='label',
 		metadata={"help": "The name of the label to use"},
 	)
+	measured_scanpath_file: Optional[str] = field(
+		default=None,
+		metadata={"help": "Path to a JSON/JSONL/CSV file that contains aligned measured scanpaths."},
+	)
+	measured_text_field: str = field(
+		default='text',
+		metadata={"help": "Column containing the exact measured text used as model input."},
+	)
+	measured_word_id_field: str = field(
+		default='word_id',
+		metadata={"help": "Column containing 1-based lexical word positions for the measured scanpath."},
+	)
 
 	def __post_init__(self):
 		if self.task_name is not None:
@@ -245,6 +265,10 @@ class ModelArguments:
 		default=0.5,
 		metadata={"help": "hyperparameter used before the gaze-integrated loss"},
 	)
+	scanpath_source: str = field(
+		default='eyettention',
+		metadata={"help": "Where to source word-level scanpaths from: eyettention or measured."},
+	)
 
 
 
@@ -261,6 +285,13 @@ def main():
 		model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath(sys.argv[1]))
 	else:
 		model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+
+	model_args.scanpath_source = normalize_scanpath_source(model_args.scanpath_source)
+	is_custom_measured_task = data_args.task_name == CUSTOM_ALIGNED_SCANPATH_TASK
+	if model_args.scanpath_source == "measured" and not is_custom_measured_task:
+		raise ValueError(
+			"Measured scanpath mode currently expects --task_name custom_aligned_scanpath together with --measured_scanpath_file."
+		)
 
 	# Setup logging
 	logging.basicConfig(
@@ -289,12 +320,32 @@ def main():
 
 	# Get the datasets: you can either provide your own CSV/JSON training and evaluation files (see below)
 	# or specify a GLUE benchmark task (the dataset will be downloaded automatically from the datasets Hub).
-	if data_args.task_name is not None:
+	if is_custom_measured_task:
+		if data_args.measured_scanpath_file is None:
+			raise ValueError("--measured_scanpath_file is required when --task_name custom_aligned_scanpath.")
+		raw_datasets = load_measured_scanpath_dataset(data_args.measured_scanpath_file)
+	elif data_args.task_name is not None:
 		# download the dataset.
 		raw_datasets = load_dataset("glue", data_args.task_name)
+	else:
+		raise ValueError(
+			"Pass a GLUE task name or use --task_name custom_aligned_scanpath with --measured_scanpath_file."
+		)
 
 	# Labels
-	if data_args.task_name is not None:
+	has_custom_labels = False
+	if is_custom_measured_task:
+		has_custom_labels, is_regression, label_list = infer_custom_label_schema(raw_datasets, data_args.label_name)
+		if has_custom_labels:
+			if not is_regression:
+				num_labels = len(label_list)
+			else:
+				num_labels = 1
+		else:
+			is_regression = False
+			label_list = None
+			num_labels = 2
+	elif data_args.task_name is not None:
 		is_regression = data_args.task_name == "stsb"
 		if not is_regression:
 			label_list = raw_datasets["train"].features["label"].names
@@ -332,7 +383,9 @@ def main():
 	model.add_sp_func(config)
 
 	# Preprocessing the raw_datasets
-	if data_args.task_name is not None:
+	if is_custom_measured_task:
+		sentence1_key, sentence2_key = data_args.measured_text_field, None
+	elif data_args.task_name is not None:
 		sentence1_key, sentence2_key = task_to_keys[data_args.task_name]
 
 	#set learning rate
@@ -346,14 +399,19 @@ def main():
 					'qnli': 2e-5,
 					}
 
-	training_args.learning_rate = task_to_lr.get(data_args.task_name)
+	training_args.learning_rate = task_to_lr.get(data_args.task_name, training_args.learning_rate)
 
 	if data_args.task_name in ['sst2', 'mrpc']:
 		data_args.remove_punctuation_space=True
 
 	# Some models have set the order of the labels to use, so let's make sure we do use it.
 	label_to_id = None
-	if (
+	if is_custom_measured_task:
+		if label_list is not None and not is_regression:
+			label_to_id = {label: i for i, label in enumerate(label_list)}
+			model.config.label2id = {str(label): idx for label, idx in label_to_id.items()}
+			model.config.id2label = {idx: str(label) for label, idx in label_to_id.items()}
+	elif (
 		model.config.label2id != PretrainedConfig(num_labels=num_labels).label2id
 		and data_args.task_name is not None
 		and not is_regression
@@ -375,14 +433,55 @@ def main():
 	elif data_args.task_name is None and not is_regression:
 		label_to_id = {v: i for i, v in enumerate(label_list)}
 
-	if label_to_id is not None:
+	if label_to_id is not None and not is_custom_measured_task:
 		model.config.label2id = label_to_id
 		model.config.id2label = {id: label for label, id in config.label2id.items()}
-	elif data_args.task_name is not None and not is_regression:
+	elif data_args.task_name is not None and not is_regression and not is_custom_measured_task:
 		model.config.label2id = {l: i for i, l in enumerate(label_list)}
 		model.config.id2label = {id: label for label, id in config.label2id.items()}
 
+	if is_custom_measured_task and (training_args.do_train or training_args.do_eval) and not has_custom_labels:
+		raise ValueError(
+			"Custom measured-scanpath training/evaluation requires a label column. Use --label_name to point to it."
+		)
+
 	def preprocess_function(examples):
+
+		if is_custom_measured_task and model_args.scanpath_source == "measured":
+			total = len(examples[sentence1_key])
+			features = {
+				"input_ids": [],
+				"attention_mask": [],
+				"token_type_ids": [],
+				"word_ids": [],
+				"ET_input_ids": [],
+				"ET_attention_mask": [],
+				"ET_token_type_ids": [],
+				"ET_word_ids": [],
+				"ET_word_len": [],
+				"measured_word_ids": [],
+				"measured_sp_len": [],
+			}
+
+			for idx in range(total):
+				# In measured-scanpath mode the aligned dataset text becomes the exact text fed to the LM,
+				# and word_id is converted into the start/word/end convention expected by SP_Encoder.
+				measured_feature = build_measured_single_sentence_features(
+					text=examples[sentence1_key][idx],
+					word_id_value=examples[data_args.measured_word_id_field][idx],
+					tokenizer=tokenizer,
+					max_seq_length=data_args.max_seq_length,
+					remove_punctuation_space=data_args.remove_punctuation_space,
+				)
+				for key, value in measured_feature.items():
+					features[key].append(value)
+
+			if data_args.label_name in examples:
+				if label_to_id is not None:
+					features["label"] = [label_to_id[label] for label in examples[data_args.label_name]]
+				else:
+					features["label"] = examples[data_args.label_name]
+			return features
 
 		total = len(examples[sentence1_key])
 
@@ -500,9 +599,12 @@ def main():
 			features['ET_word_ids'] = [[features['word_ids'][idx]] for idx in range(total)]
 			features['ET_word_len'] = [[[np.nan]+word_len_list[idx][:features['ET_word_ids'][idx][0][-1]-1]+[np.nan]] for idx in range(total)]
 
-		# Map labels to IDs (not necessary for GLUE tasks)
-		if "label" in examples:
-			features["label"] = examples["label"]
+		# Map labels to IDs (GLUE already uses numeric labels; custom datasets may use strings).
+		if data_args.label_name in examples:
+			if label_to_id is not None:
+				features["label"] = [label_to_id[label] for label in examples[data_args.label_name]]
+			else:
+				features["label"] = examples[data_args.label_name]
 		return features
 
 
@@ -518,26 +620,38 @@ def main():
 		if "train" not in raw_datasets:
 			raise ValueError("--do_train requires a train dataset")
 		train_dataset = raw_datasets["train"]
-		if data_args.max_train_samples is not None:
+		train_dataset_all = train_dataset
+		if data_args.max_train_samples is not None or data_args.train_as_val:
 			logger.warning(f'shuffling training set w. seed {data_args.low_resource_data_seed}!')
 			train_dataset_all = train_dataset.shuffle(seed=data_args.low_resource_data_seed)
+		if data_args.max_train_samples is not None:
 			train_dataset = train_dataset_all.select(range(data_args.max_train_samples))
 
 
 	if training_args.do_eval:
 		if "validation" not in raw_datasets and "validation_matched" not in raw_datasets:
-			raise ValueError("--do_eval requires a validation dataset")
-		eval_dataset = raw_datasets["validation_matched" if data_args.task_name == "mnli" else "validation"]
-		if data_args.max_eval_samples is not None:
-			eval_dataset = eval_dataset.select(range(data_args.max_eval_samples))
+			if not data_args.train_as_val:
+				raise ValueError("--do_eval requires a validation dataset")
+			eval_dataset = None
+		else:
+			eval_dataset = raw_datasets["validation_matched" if data_args.task_name == "mnli" else "validation"]
+			if data_args.max_eval_samples is not None:
+				eval_dataset = eval_dataset.select(range(data_args.max_eval_samples))
 
 
-	if data_args.train_as_val:
-		test_dataset = eval_dataset
-		eval_dataset = train_dataset_all.select(range(data_args.max_train_samples, data_args.max_train_samples + 1000))
+	if data_args.train_as_val and training_args.do_train:
+		if data_args.max_train_samples is None:
+			raise ValueError("--train_as_val requires --max_train_samples so the held-out split can be derived from train.")
+		test_dataset = eval_dataset if training_args.do_eval else None
+		eval_end = min(data_args.max_train_samples + 1000, len(train_dataset_all))
+		eval_dataset = train_dataset_all.select(range(data_args.max_train_samples, eval_end))
+		if test_dataset is None:
+			test_dataset = eval_dataset
 
 	# Get the metric function
-	if data_args.task_name is not None:
+	if is_custom_measured_task:
+		metric = evaluate.load("mse") if is_regression else evaluate.load("accuracy")
+	elif data_args.task_name is not None:
 		metric = evaluate.load("glue", data_args.task_name)
 	elif is_regression:
 		metric = evaluate.load("mse")
@@ -566,6 +680,7 @@ def main():
 
 		def __call__(self, features: List[Dict[str, Union[List[int], List[List[int]], torch.Tensor]]]) -> Dict[str, torch.Tensor]:
 			ET_special_keys = ['ET_input_ids', 'ET_token_type_ids', 'ET_attention_mask', 'ET_word_ids', 'ET_word_len']
+			MEASURED_special_keys = ['measured_word_ids', 'measured_sp_len']
 			new_features = ['word_ids', 'word_len']
 			bs = len(features)
 
@@ -661,6 +776,22 @@ def main():
 				if k in ET_special_keys:
 					batch[k] = batch[k].view(bs, num_sent, -1)
 
+			if "measured_word_ids" in features[0]:
+				measured_sequences = []
+				measured_lengths = []
+				max_measured_length = 0
+				for feature in features:
+					for i in range(num_sent):
+						current_ids = feature['measured_word_ids'][i]
+						measured_sequences.append(current_ids)
+						measured_lengths.append(feature['measured_sp_len'][i])
+						max_measured_length = max(max_measured_length, len(current_ids))
+
+				batch['measured_word_ids'] = torch.tensor(
+					pad_seq(measured_sequences, max_measured_length, fill_value=0, dtype=np.float64, truncation=True)
+				).view(bs, num_sent, -1)
+				batch['measured_sp_len'] = torch.tensor(measured_lengths, dtype=torch.int64).view(bs, num_sent)
+
 			if "label" in features[0]:
 				#features["label"] = examples["label"]
 				label_list = []
@@ -670,7 +801,7 @@ def main():
 
 			return batch
 
-	data_collator = default_data_collator if data_args.pad_to_max_length else OurDataCollatorWithPadding(tokenizer)
+	data_collator = OurDataCollatorWithPadding(tokenizer) if (model_args.scanpath_source == "measured" or not data_args.pad_to_max_length) else default_data_collator
 
 	# Initialize our Trainer
 	trainer = OurTrainer(
