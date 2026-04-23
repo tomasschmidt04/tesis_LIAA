@@ -168,7 +168,12 @@ The current commands assume a file like:
 ..\reading-et\aligned_output\aligned_scanpaths.jsonl
 ```
 
-That aligned reading dataset is external to this repository.
+In `tesis_LIAA`, `reading-et` is vendored as a normal sibling folder of `ACL-GazeSupervisedLM`, not as an external submodule reference. Before running the BETO pipeline, unpack the archived scanpath artifacts once:
+
+```powershell
+Expand-Archive -LiteralPath ..\reading-et\artifacts\aligned_output.zip -DestinationPath ..\reading-et -Force
+Expand-Archive -LiteralPath ..\reading-et\artifacts\results_all_alligned.zip -DestinationPath ..\reading-et -Force
+```
 
 ### Spanish downstream tasks
 
