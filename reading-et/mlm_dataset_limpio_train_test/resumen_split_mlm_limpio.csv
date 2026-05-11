@@ -1,0 +1,21 @@
+cuento,split,n_json_files,n_trials,porcentaje_trials_total,n_words_total,n_words_mean
+"Ahora debería reírme, si no estuviera muerto",test,53,1843,3.8278,37038,20.0966
+Buenos Aires,test,47,1757,3.6492,34071,19.3916
+Cómo funciona caminar en la nieve,train,45,1848,3.8382,56720,30.6926
+Cómo funcionan los bolsillos,train,46,2297,4.7707,52470,22.8428
+Educar para escalar y bucear,train,47,1868,3.8797,33798,18.0931
+El almohadón de plumas,train,56,2991,6.2121,38570,12.8954
+El espejo,train,56,2975,6.1789,41632,13.9939
+El golpe de gracia,test,50,1981,4.1144,36416,18.3826
+Embarrar la magia,train,49,2680,5.5662,41491,15.4817
+La canción que cantábamos todos los días,train,53,2383,4.9493,40076,16.8175
+La de la Obsesión por la Patineta,train,51,2482,5.1549,36162,14.5697
+La gallina degollada,train,51,2887,5.9961,40659,14.0835
+La lluvia de fuego,train,53,2725,5.6596,40355,14.8092
+La máscara de la Muerte Roja,test,47,1851,3.8444,33157,17.913
+La noche de los feos,train,49,2777,5.7676,31803,11.4523
+La salud de los enfermos,test,56,2198,4.5651,45196,20.5623
+Las fotografías,train,46,2358,4.8974,35256,14.9517
+Rubí y el lago danzante,train,53,2538,5.2712,40223,15.8483
+Una rosa para Emilia,train,55,2508,5.2089,43472,17.3333
+Wakefield,train,52,3201,6.6483,43264,13.5158

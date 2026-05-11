@@ -1,0 +1,20 @@
+{
+  "aligned_clean_dir": "/home/tomi/tesis_LIAA/reading-et/procesamiento_por_largo_input/data_filtrada",
+  "features_reference_dir": "/home/tomi/tesis_LIAA/reading-et/results_all_alligned_2",
+  "output_dir": "/home/tomi/tesis_LIAA/reading-et/results_all_alligned_2_limpio_alineado",
+  "feature_fields_copied": [
+    "feature_names",
+    "reading_features_by_word",
+    "reading_features_by_fixation",
+    "reading_features_mask_by_word",
+    "reading_features_mask_by_fixation",
+    "num_text_tokens",
+    "num_fixations"
+  ],
+  "examples_processed": 48148,
+  "examples_with_feature_match": 48148,
+  "examples_without_feature_match": 0,
+  "files_written": 1015,
+  "stories_written": 20,
+  "missing_examples_preview": []
+}

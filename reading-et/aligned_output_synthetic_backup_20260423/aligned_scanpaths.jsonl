@@ -1,0 +1,24 @@
+{"text": "Ahora debería reírme si no estuviera muerto", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "La profesora corrige los ejercicios con mucha paciencia", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "El laboratorio analiza señales oculares en español", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "Nuestra red aprende patrones de lectura muy rápido", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "BETO procesa cada oración con atención contextual", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "El modelo auxiliar observa la ruta de fijaciones", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "Las métricas finales dependen del corpus alineado", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "Cada lector recorre palabras distintas en segundos", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "La GPU acelera el entrenamiento del backbone", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "Este experimento mezcla MLM y supervisión ocular", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "El tokenizer divide subtokens antes del encoder", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "La rama GRU sigue el orden del scanpath", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "Los checkpoints guardan el estado del modelo", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "La evaluación ligera usa ejemplos reservados", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "El preentrenamiento mejora la transferencia posterior", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "Los datos medidos deben estar bien alineados", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "Cada oración necesita texto y posiciones léxicas", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "El optimizador actualiza pesos después del backward", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "La pérdida principal compite con la auxiliar", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "Una corrida corta sirve para validar la tubería", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "El export del backbone se hace después", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "Los ejemplos sintéticos solo prueban la ejecución", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "El corpus real todavía falta en esta copia", "word_id": [1, 2, 3, 4, 5, 6, 5]}
+{"text": "Aun así el pipeline puede entrenar en CUDA", "word_id": [1, 2, 3, 4, 5, 6, 5]}
