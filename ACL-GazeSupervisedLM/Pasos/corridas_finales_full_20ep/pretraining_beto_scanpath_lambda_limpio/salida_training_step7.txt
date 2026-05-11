@@ -1,0 +1,482 @@
+PASO 7 - Entrenamiento mas grande del modelo con losses combinadas + Beto
+
+----------------------------------------
+Configuracion
+----------------------------------------
+dataset: None
+train_file: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl
+eval_file: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl
+model_name_or_path: dccuchile/bert-base-spanish-wwm-cased
+tokenizer: BertTokenizerFast
+vocab_size: 31002
+model_type: bert
+hidden_size: 768
+num_hidden_layers: 12
+max_train_samples: 38518
+max_eval_samples: 9630
+epochs: 20
+batch_size: 4
+lr: 5e-05
+aux_weight: 0.1
+adaptive_scanpath_weight: True
+scanpath_weight_min: 0.05
+scanpath_weight_max: 0.5
+scanpath_weight_warmup_epochs: 1
+scanpath_weight_update_metric: auto
+max_seq_length: 128
+seed: 13
+device: cuda
+split_strategy: precomputed_files
+split_report: Pasos/corridas_finales_full_20ep/pretraining_beto_scanpath_lambda_limpio/split_report.json
+
+----------------------------------------
+Batch debug 0 (epoch 1)
+----------------------------------------
+input_ids.shape: (4, 62)
+labels.shape: (4, 62)
+main_mlm_logits.shape: (4, 62, 31002)
+scanpath_mlm_logits.shape: (4, 43, 31002)
+main_mlm_loss: 1.4053301811218262
+scanpath_mlm_loss: 10.376657485961914
+scanpath_loss_weight: 0.05
+total_loss: 1.9241631031036377
+
+----------------------------------------
+Batch debug 1 (epoch 1)
+----------------------------------------
+input_ids.shape: (4, 88)
+labels.shape: (4, 88)
+main_mlm_logits.shape: (4, 88, 31002)
+scanpath_mlm_logits.shape: (4, 75, 31002)
+main_mlm_loss: 2.068739414215088
+scanpath_mlm_loss: 10.349212646484375
+scanpath_loss_weight: 0.05
+total_loss: 2.586199998855591
+
+----------------------------------------
+Epoch 1 summary
+----------------------------------------
+mean_main_mlm_loss: 0.5924085273853749
+mean_scanpath_mlm_loss: 3.6859160097402945
+mean_total_loss: 0.776704331081378
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 7.890178302098747
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: warmup activo: epoch 1 <= scanpath_weight_warmup_epochs=1; lambda_next queda en scanpath_weight_min.
+num_steps: 9630
+duration_sec: 685.2396232259998
+best_checkpoint_updated: Pasos/corridas_finales_full_20ep/pretraining_beto_scanpath_lambda_limpio/best_checkpoint
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 5.682907899699338
+- eval_mean_scanpath_mlm_loss: 7.890178302098747
+- eval_mean_total_loss: 6.0774168139478295
+
+----------------------------------------
+Epoch 2 summary
+----------------------------------------
+mean_main_mlm_loss: 0.25003617343633855
+mean_scanpath_mlm_loss: 1.1994789776244315
+mean_total_loss: 0.3100101231042729
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 8.455437503829351
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 685.4795891469985
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 7.504964616657095
+- eval_mean_scanpath_mlm_loss: 8.455437503829351
+- eval_mean_total_loss: 7.9277364961134635
+
+----------------------------------------
+Epoch 3 summary
+----------------------------------------
+mean_main_mlm_loss: 0.15781155267108815
+mean_scanpath_mlm_loss: 0.7036928660398772
+mean_total_loss: 0.19299619651650032
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 8.412529521507283
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 685.9321889179992
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 8.308409691550011
+- eval_mean_scanpath_mlm_loss: 8.412529521507283
+- eval_mean_total_loss: 8.729036168600633
+
+----------------------------------------
+Epoch 4 summary
+----------------------------------------
+mean_main_mlm_loss: 0.1252545294783424
+mean_scanpath_mlm_loss: 0.5087095954944549
+mean_total_loss: 0.15069000965302476
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 8.502354016533722
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 682.0768452209995
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 8.421026814320555
+- eval_mean_scanpath_mlm_loss: 8.502354016533722
+- eval_mean_total_loss: 8.846144515513581
+
+----------------------------------------
+Epoch 5 summary
+----------------------------------------
+mean_main_mlm_loss: 0.1091854234351715
+mean_scanpath_mlm_loss: 0.4071482891807292
+mean_total_loss: 0.12954283818541937
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 8.625898874182242
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 678.9627515059983
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 9.406363354172818
+- eval_mean_scanpath_mlm_loss: 8.625898874182242
+- eval_mean_total_loss: 9.837658293520493
+
+----------------------------------------
+Epoch 6 summary
+----------------------------------------
+mean_main_mlm_loss: 0.09380589097665822
+mean_scanpath_mlm_loss: 0.3330688539235045
+mean_total_loss: 0.11045933389999778
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 8.561035041991262
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.2767755810019
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 9.299776782328108
+- eval_mean_scanpath_mlm_loss: 8.561035041991262
+- eval_mean_total_loss: 9.727828530576142
+
+----------------------------------------
+Epoch 7 summary
+----------------------------------------
+mean_main_mlm_loss: 0.08808014819468736
+mean_scanpath_mlm_loss: 0.2914469855099139
+mean_total_loss: 0.1026524977608293
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 8.720356730230623
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.0447889229981
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 9.903697367225375
+- eval_mean_scanpath_mlm_loss: 8.720356730230623
+- eval_mean_total_loss: 10.339715208524089
+
+----------------------------------------
+Epoch 8 summary
+----------------------------------------
+mean_main_mlm_loss: 0.08132671879275448
+mean_scanpath_mlm_loss: 0.2468263036597434
+mean_total_loss: 0.09366803418389401
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 8.755608782914786
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.1057641919979
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 9.671625803475363
+- eval_mean_scanpath_mlm_loss: 8.755608782914786
+- eval_mean_total_loss: 10.1094062421409
+
+----------------------------------------
+Epoch 9 summary
+----------------------------------------
+mean_main_mlm_loss: 0.07408013393157573
+mean_scanpath_mlm_loss: 0.21757290389112932
+mean_total_loss: 0.08495877931748841
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 8.82538423565931
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.1882093490021
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 9.537980647578191
+- eval_mean_scanpath_mlm_loss: 8.82538423565931
+- eval_mean_total_loss: 9.979249863529523
+
+----------------------------------------
+Epoch 10 summary
+----------------------------------------
+mean_main_mlm_loss: 0.07613809743341653
+mean_scanpath_mlm_loss: 0.19678917219656833
+mean_total_loss: 0.08597755619611218
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 8.910757798293105
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.3381505770012
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 10.326318645992153
+- eval_mean_scanpath_mlm_loss: 8.910757798293105
+- eval_mean_total_loss: 10.77185653244142
+
+----------------------------------------
+Epoch 11 summary
+----------------------------------------
+mean_main_mlm_loss: 0.06753133017953801
+mean_scanpath_mlm_loss: 0.1745691151785527
+mean_total_loss: 0.07625978605306655
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 9.12863476153624
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.3339203260002
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 10.424813528690624
+- eval_mean_scanpath_mlm_loss: 9.12863476153624
+- eval_mean_total_loss: 10.881245265965445
+
+----------------------------------------
+Epoch 12 summary
+----------------------------------------
+mean_main_mlm_loss: 0.06616188458631722
+mean_scanpath_mlm_loss: 0.15687242164979506
+mean_total_loss: 0.07400550578223276
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 9.142123619583359
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.0121533249985
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 10.112249449440014
+- eval_mean_scanpath_mlm_loss: 9.142123619583359
+- eval_mean_total_loss: 10.569355624161686
+
+----------------------------------------
+Epoch 13 summary
+----------------------------------------
+mean_main_mlm_loss: 0.0640274212400013
+mean_scanpath_mlm_loss: 0.14711264972656005
+mean_total_loss: 0.07138305371762228
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 9.284480798779136
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.2791383920048
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 10.685180887431402
+- eval_mean_scanpath_mlm_loss: 9.284480798779136
+- eval_mean_total_loss: 11.149404926553517
+
+----------------------------------------
+Epoch 14 summary
+----------------------------------------
+mean_main_mlm_loss: 0.06190670600880105
+mean_scanpath_mlm_loss: 0.13412078059503765
+mean_total_loss: 0.06861274511568413
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 9.672050799246247
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.0610375929973
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 10.552228265822528
+- eval_mean_scanpath_mlm_loss: 9.672050799246247
+- eval_mean_total_loss: 11.035830803685807
+
+----------------------------------------
+Epoch 15 summary
+----------------------------------------
+mean_main_mlm_loss: 0.059345145502997985
+mean_scanpath_mlm_loss: 0.12360571871928944
+mean_total_loss: 0.06552543150410448
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 9.034402731150092
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.0090105199997
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 10.349306486175703
+- eval_mean_scanpath_mlm_loss: 9.034402731150092
+- eval_mean_total_loss: 10.801026621629234
+
+----------------------------------------
+Epoch 16 summary
+----------------------------------------
+mean_main_mlm_loss: 0.05723589131427426
+mean_scanpath_mlm_loss: 0.11545895038977476
+mean_total_loss: 0.06300883888651133
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 9.33816164900298
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.0649163859998
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 10.261625386749786
+- eval_mean_scanpath_mlm_loss: 9.33816164900298
+- eval_mean_total_loss: 10.72853346520484
+
+----------------------------------------
+Epoch 17 summary
+----------------------------------------
+mean_main_mlm_loss: 0.05936670696400287
+mean_scanpath_mlm_loss: 0.1105700004838967
+mean_total_loss: 0.06489520702833058
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 9.7084403361791
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.0555303930014
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 10.591148544585586
+- eval_mean_scanpath_mlm_loss: 9.7084403361791
+- eval_mean_total_loss: 11.07657057502341
+
+----------------------------------------
+Epoch 18 summary
+----------------------------------------
+mean_main_mlm_loss: 0.05541194314128294
+mean_scanpath_mlm_loss: 0.10175547773606722
+mean_total_loss: 0.06049971708689082
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 9.38506641419623
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.1448374689935
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 10.372765917714649
+- eval_mean_scanpath_mlm_loss: 9.38506641419623
+- eval_mean_total_loss: 10.842019236959096
+
+----------------------------------------
+Epoch 19 summary
+----------------------------------------
+mean_main_mlm_loss: 0.05156414438658297
+mean_scanpath_mlm_loss: 0.0955791294635514
+mean_total_loss: 0.0563431009363954
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 9.54340055149259
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.2278834859972
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 10.62936562458146
+- eval_mean_scanpath_mlm_loss: 9.54340055149259
+- eval_mean_total_loss: 11.106535651161028
+
+----------------------------------------
+Epoch 20 summary
+----------------------------------------
+mean_main_mlm_loss: 0.052530276103161
+mean_scanpath_mlm_loss: 0.09319810803451897
+mean_total_loss: 0.05719018162803882
+scanpath_loss_weight_usado: 0.05
+scanpath_weight_update_metric: eval_loss_scanpath
+scanpath_loss_for_weight_update: 9.473491853257746
+initial_scanpath_loss_for_lambda: 7.890178302098747
+scanpath_weight_progress: 0.0
+next_scanpath_loss_weight: 0.05
+scanpath_weight_warning: None
+num_steps: 9630
+duration_sec: 679.0688552880019
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 10.489784374882612
+- eval_mean_scanpath_mlm_loss: 9.473491853257746
+- eval_mean_total_loss: 10.963458979050582
+
+----------------------------------------
+Training final summary
+----------------------------------------
+num_steps: 192600
+initial_main_loss: 1.4053301811218262
+final_main_loss: 0.00025049850228242576
+initial_scanpath_loss: 10.376657485961914
+final_scanpath_loss: 0.00461359228938818
+initial_total_loss: 1.9241631031036377
+final_total_loss: 0.00048117811093106866
+checkpoints_guardados:
+- Pasos/corridas_finales_full_20ep/pretraining_beto_scanpath_lambda_limpio/checkpoint_final
+best_checkpoint: Pasos/corridas_finales_full_20ep/pretraining_beto_scanpath_lambda_limpio/best_checkpoint
+final_checkpoint: Pasos/corridas_finales_full_20ep/pretraining_beto_scanpath_lambda_limpio/checkpoint_final
+loss_curves_csv: Pasos/corridas_finales_full_20ep/pretraining_beto_scanpath_lambda_limpio/loss_curves.csv
+lambda_scanpath_log_csv: Pasos/corridas_finales_full_20ep/pretraining_beto_scanpath_lambda_limpio/lambda_scanpath_log.csv
+status:
+- training OK
+- checkpointing OK
+
+Interpretacion breve:
+- ratio scanpath/main: 1.7741789106817734
+- ratio ponderado (aux_weight * scanpath)/main: 0.17741789106817735
+- sugerencia: la rama auxiliar pesa poco; si queres mas influencia scanpath, podria convenir subir aux_weight.
+- si las losses bajan o se mantienen estables entre epochs, el entrenamiento parece sano para esta escala intermedia.
+- la evaluacion minima ayuda a no depender solo de la loss de entrenamiento, aunque todavia no es un validation setup sofisticado.

@@ -1,0 +1,69 @@
+PASO 7 BASELINE - Preentrenamiento BETO sin rama scanpath
+
+----------------------------------------
+Configuracion
+----------------------------------------
+dataset: None
+train_file: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl
+eval_file: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl
+model_name_or_path: hf-internal-testing/tiny-random-bert
+tokenizer: BertTokenizerFast
+vocab_size: 1124
+model_type: bert
+hidden_size: 32
+num_hidden_layers: 5
+max_train_samples: 4
+max_eval_samples: 2
+epochs: 1
+batch_size: 2
+lr: 0.001
+max_seq_length: 128
+seed: 13
+device: cpu
+split_strategy: precomputed_files
+split_report: Pasos/paso_7_precomputed_story_split_beto_baseline_smoke/split_report.json
+
+----------------------------------------
+Batch debug 0 (epoch 1)
+----------------------------------------
+input_ids.shape: (2, 35)
+labels.shape: (2, 35)
+logits.shape: (2, 35, 1124)
+mlm_loss: 6.9993109703063965
+
+----------------------------------------
+Batch debug 1 (epoch 1)
+----------------------------------------
+input_ids.shape: (2, 128)
+labels.shape: (2, 128)
+logits.shape: (2, 128, 1124)
+mlm_loss: 7.065116882324219
+
+----------------------------------------
+Epoch 1 summary
+----------------------------------------
+mean_mlm_loss: 7.032213926315308
+num_steps: 2
+duration_sec: 0.049932010006159544
+best_checkpoint_updated: Pasos/paso_7_precomputed_story_split_beto_baseline_smoke/best_checkpoint
+Evaluacion minima:
+- eval_mean_mlm_loss: 6.960085391998291
+
+----------------------------------------
+Training final summary
+----------------------------------------
+num_steps: 2
+initial_mlm_loss: 6.9993109703063965
+final_mlm_loss: 7.065116882324219
+checkpoints_guardados:
+- Pasos/paso_7_precomputed_story_split_beto_baseline_smoke/checkpoint_final
+best_checkpoint: Pasos/paso_7_precomputed_story_split_beto_baseline_smoke/best_checkpoint
+final_checkpoint: Pasos/paso_7_precomputed_story_split_beto_baseline_smoke/checkpoint_final
+loss_curves_csv: Pasos/paso_7_precomputed_story_split_beto_baseline_smoke/loss_curves.csv
+status:
+- training OK
+- checkpointing OK
+
+Nota:
+- Esta corrida usa los mismos textos alineados del pipeline measured, pero no instancia ni usa la rama scanpath.
+- La loss es solo MLM estandar del modelo BETO base.

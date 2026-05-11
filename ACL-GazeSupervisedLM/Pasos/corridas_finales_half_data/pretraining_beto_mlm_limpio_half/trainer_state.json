@@ -1,0 +1,104 @@
+{
+  "total_steps": 38520,
+  "train_size": 19259,
+  "eval_size": 4815,
+  "epoch_summaries": [
+    {
+      "epoch": 1,
+      "mean_mlm_loss": 0.8267776749906278,
+      "num_steps": 4815,
+      "duration_sec": 243.55924949099995,
+      "eval": {
+        "mean_mlm_loss": 4.9788826240158555
+      },
+      "checkpoint_saved_to": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_1",
+      "best_checkpoint_updated": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/best_checkpoint"
+    },
+    {
+      "epoch": 2,
+      "mean_mlm_loss": 0.29668549307111747,
+      "num_steps": 4815,
+      "duration_sec": 244.347271332,
+      "eval": {
+        "mean_mlm_loss": 6.394082255240691
+      },
+      "checkpoint_saved_to": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_2"
+    },
+    {
+      "epoch": 3,
+      "mean_mlm_loss": 0.17024967228456245,
+      "num_steps": 4815,
+      "duration_sec": 244.18281574199978,
+      "eval": {
+        "mean_mlm_loss": 7.017541186952116
+      },
+      "checkpoint_saved_to": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_3"
+    },
+    {
+      "epoch": 4,
+      "mean_mlm_loss": 0.13792527904446303,
+      "num_steps": 4815,
+      "duration_sec": 245.20720374099983,
+      "eval": {
+        "mean_mlm_loss": 7.813778250914475
+      },
+      "checkpoint_saved_to": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_4"
+    },
+    {
+      "epoch": 5,
+      "mean_mlm_loss": 0.1283141461532034,
+      "num_steps": 4815,
+      "duration_sec": 244.4430689730002,
+      "eval": {
+        "mean_mlm_loss": 7.832674383919104
+      },
+      "checkpoint_saved_to": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_5"
+    },
+    {
+      "epoch": 6,
+      "mean_mlm_loss": 0.10901136387239654,
+      "num_steps": 4815,
+      "duration_sec": 244.10557908400006,
+      "eval": {
+        "mean_mlm_loss": 8.112396645585564
+      },
+      "checkpoint_saved_to": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_6"
+    },
+    {
+      "epoch": 7,
+      "mean_mlm_loss": 0.09841113261174725,
+      "num_steps": 4815,
+      "duration_sec": 243.54021494900007,
+      "eval": {
+        "mean_mlm_loss": 8.678917790568152
+      },
+      "checkpoint_saved_to": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_7"
+    },
+    {
+      "epoch": 8,
+      "mean_mlm_loss": 0.09720307743903439,
+      "num_steps": 4815,
+      "duration_sec": 243.6725747119999,
+      "eval": {
+        "mean_mlm_loss": 9.188782507002948
+      },
+      "checkpoint_saved_to": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_8"
+    }
+  ],
+  "checkpoint_paths": [
+    "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_1",
+    "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_2",
+    "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_3",
+    "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_4",
+    "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_5",
+    "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_6",
+    "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_7",
+    "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_8",
+    "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_final"
+  ],
+  "best_checkpoint_path": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/best_checkpoint",
+  "final_checkpoint_path": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_final",
+  "loss_curves_path": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/loss_curves.csv",
+  "split_report_path": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/split_report.json",
+  "dry_run_split_only": false
+}

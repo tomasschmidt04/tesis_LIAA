@@ -1,0 +1,192 @@
+PASO 7 - Entrenamiento mas grande del modelo con losses combinadas + Beto
+
+----------------------------------------
+Configuracion
+----------------------------------------
+dataset: /home/tomi/tesis_LIAA/reading-et/aligned_output/aligned_scanpaths.jsonl
+model_name_or_path: dccuchile/bert-base-spanish-wwm-cased
+tokenizer: BertTokenizerFast
+vocab_size: 31002
+model_type: bert
+hidden_size: 768
+num_hidden_layers: 12
+max_train_samples: 31836
+max_eval_samples: 1000
+epochs: 8
+batch_size: 4
+lr: 5e-05
+aux_weight: 0.1
+max_seq_length: 128
+seed: 13
+device: cuda
+
+----------------------------------------
+Batch debug 0 (epoch 1)
+----------------------------------------
+input_ids.shape: (4, 34)
+labels.shape: (4, 34)
+main_mlm_logits.shape: (4, 34, 31002)
+scanpath_mlm_logits.shape: (4, 59, 31002)
+main_mlm_loss: 2.5948381423950195
+scanpath_mlm_loss: 10.322870254516602
+total_loss: 3.6271252632141113
+
+----------------------------------------
+Batch debug 1 (epoch 1)
+----------------------------------------
+input_ids.shape: (4, 34)
+labels.shape: (4, 34)
+main_mlm_logits.shape: (4, 34, 31002)
+scanpath_mlm_logits.shape: (4, 41, 31002)
+main_mlm_loss: 0.9526799321174622
+scanpath_mlm_loss: 10.359539031982422
+total_loss: 1.9886338710784912
+
+----------------------------------------
+Epoch 1 summary
+----------------------------------------
+mean_main_mlm_loss: 1.5251703275575166
+mean_scanpath_mlm_loss: 4.439885271441429
+mean_total_loss: 1.9691588611908717
+num_steps: 7959
+duration_sec: 544.5485861650668
+checkpoint_saved_to: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_1
+best_checkpoint_updated: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/best_checkpoint
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 1.2410634646862746
+- eval_mean_scanpath_mlm_loss: 3.4744537343978883
+- eval_mean_total_loss: 1.588508848041296
+
+----------------------------------------
+Epoch 2 summary
+----------------------------------------
+mean_main_mlm_loss: 1.039247731609619
+mean_scanpath_mlm_loss: 2.044372371285461
+mean_total_loss: 1.2436849702645072
+num_steps: 7959
+duration_sec: 543.9248883889522
+checkpoint_saved_to: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_2
+best_checkpoint_updated: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/best_checkpoint
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 1.21246276600298
+- eval_mean_scanpath_mlm_loss: 2.18938100117445
+- eval_mean_total_loss: 1.431400877468288
+
+----------------------------------------
+Epoch 3 summary
+----------------------------------------
+mean_main_mlm_loss: 0.9201354437772633
+mean_scanpath_mlm_loss: 1.4878062051115364
+mean_total_loss: 1.0689160654674756
+num_steps: 7959
+duration_sec: 543.9863358479924
+checkpoint_saved_to: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_3
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 1.2559419509224827
+- eval_mean_scanpath_mlm_loss: 1.8019561083614826
+- eval_mean_total_loss: 1.436137561902404
+
+----------------------------------------
+Epoch 4 summary
+----------------------------------------
+mean_main_mlm_loss: 0.8632745893403697
+mean_scanpath_mlm_loss: 1.2494804323656161
+mean_total_loss: 0.9882226332610137
+num_steps: 7959
+duration_sec: 544.5324422960402
+checkpoint_saved_to: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_4
+best_checkpoint_updated: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/best_checkpoint
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 1.260372681256893
+- eval_mean_scanpath_mlm_loss: 1.6337448948919773
+- eval_mean_total_loss: 1.4237471703048796
+
+----------------------------------------
+Epoch 5 summary
+----------------------------------------
+mean_main_mlm_loss: 0.8422688102264527
+mean_scanpath_mlm_loss: 1.128594916772176
+mean_total_loss: 0.9551283020961847
+num_steps: 7959
+duration_sec: 544.6177136009792
+checkpoint_saved_to: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_5
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 1.2873191165945026
+- eval_mean_scanpath_mlm_loss: 1.5305804814323782
+- eval_mean_total_loss: 1.4403771634418516
+
+----------------------------------------
+Epoch 6 summary
+----------------------------------------
+mean_main_mlm_loss: 0.8079066395129867
+mean_scanpath_mlm_loss: 1.0285083593996138
+mean_total_loss: 0.9107574754757879
+num_steps: 7959
+duration_sec: 544.5448565869592
+checkpoint_saved_to: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_6
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 1.3312800754642375
+- eval_mean_scanpath_mlm_loss: 1.5034006134048103
+- eval_mean_total_loss: 1.4816201324374414
+
+----------------------------------------
+Epoch 7 summary
+----------------------------------------
+mean_main_mlm_loss: 0.7983089902426124
+mean_scanpath_mlm_loss: 0.9728282442900201
+mean_total_loss: 0.895591814208813
+num_steps: 7959
+duration_sec: 544.5207385389367
+checkpoint_saved_to: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_7
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 1.2832130580037047
+- eval_mean_scanpath_mlm_loss: 1.4397593821063637
+- eval_mean_total_loss: 1.427188996823039
+
+----------------------------------------
+Epoch 8 summary
+----------------------------------------
+mean_main_mlm_loss: 0.7879673711268522
+mean_scanpath_mlm_loss: 0.9220066106141201
+mean_total_loss: 0.8801680331556027
+num_steps: 7959
+duration_sec: 544.4916889560409
+checkpoint_saved_to: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_8
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 1.3240351743418577
+- eval_mean_scanpath_mlm_loss: 1.4479011331070215
+- eval_mean_total_loss: 1.4688252900941297
+
+----------------------------------------
+Training final summary
+----------------------------------------
+num_steps: 63672
+initial_main_loss: 2.5948381423950195
+final_main_loss: 0.0032959741074591875
+initial_scanpath_loss: 10.322870254516602
+final_scanpath_loss: 0.17773352563381195
+initial_total_loss: 3.6271252632141113
+final_total_loss: 0.021069327369332314
+checkpoints_guardados:
+- Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_1
+- Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_2
+- Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_3
+- Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_4
+- Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_5
+- Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_6
+- Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_7
+- Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_epoch_8
+- Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_final
+best_checkpoint: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/best_checkpoint
+final_checkpoint: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/checkpoint_final
+loss_curves_csv: Pasos/paso_7_scanpath_full_8ep/half_data_8ep_loss_curves/loss_curves.csv
+status:
+- training OK
+- checkpointing OK
+
+Interpretacion breve:
+- ratio scanpath/main: 1.1701076014043346
+- ratio ponderado (aux_weight * scanpath)/main: 0.11701076014043346
+- sugerencia: la rama auxiliar pesa poco; si queres mas influencia scanpath, podria convenir subir aux_weight.
+- si las losses bajan o se mantienen estables entre epochs, el entrenamiento parece sano para esta escala intermedia.
+- la evaluacion minima ayuda a no depender solo de la loss de entrenamiento, aunque todavia no es un validation setup sofisticado.

@@ -1,0 +1,25 @@
+PASO 3 - Debug lambda adaptativo scanpath
+=========================================
+
+Tabla de evolucion por epoch
+epoch | loss_scanpath_usada | progress | lambda_scanpath_t | lambda_scanpath_next | loss_mlm | loss_scanpath | loss_total | metric
+1 | 7.939169 | 0.000000 | 0.050000 | 0.050000 | 0.822843 | 5.591998 | 1.102442 | eval_loss_scanpath
+warning epoch 1: warmup activo: epoch 1 <= scanpath_weight_warmup_epochs=1; lambda_next queda en scanpath_weight_min.
+2 | 8.243632 | 0.000000 | 0.050000 | 0.050000 | 0.288038 | 2.306140 | 0.403345 | eval_loss_scanpath
+3 | 8.628563 | 0.000000 | 0.050000 | 0.050000 | 0.176074 | 1.287974 | 0.240473 | eval_loss_scanpath
+4 | 8.828785 | 0.000000 | 0.050000 | 0.050000 | 0.133121 | 0.816276 | 0.173935 | eval_loss_scanpath
+5 | 8.640715 | 0.000000 | 0.050000 | 0.050000 | 0.117263 | 0.582585 | 0.146392 | eval_loss_scanpath
+6 | 8.610543 | 0.000000 | 0.050000 | 0.050000 | 0.114718 | 0.451471 | 0.137292 | eval_loss_scanpath
+7 | 8.818766 | 0.000000 | 0.050000 | 0.050000 | 0.087957 | 0.346082 | 0.105262 | eval_loss_scanpath
+8 | 9.239093 | 0.000000 | 0.050000 | 0.050000 | 0.085409 | 0.281672 | 0.099492 | eval_loss_scanpath
+
+Validaciones esperadas
+- adaptive_scanpath_weight: True
+- lambda_min: 0.05
+- lambda_max: 0.5
+- warmup_epochs: 1
+- metric_choice: auto
+- lambda_log_csv: Pasos/corridas_finales_half_data/pretraining_beto_scanpath_lambda_limpio_half/lambda_scanpath_log.csv
+- lambda se actualiza solo con promedios por epoch, no por batch.
+- si current_scanpath_loss empeora respecto de initial_scanpath_loss, progress queda clipeado en 0.
+- si no hay eval_loss_scanpath en modo auto, se usa train_loss_scanpath_mean y se deja warning.

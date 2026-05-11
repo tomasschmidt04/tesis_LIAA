@@ -1,0 +1,121 @@
+Usando Train/Test MLM limpios por cuentos:
+- Train: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl
+- Eval/Test: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl
+- MLM half train samples: 19259
+- MLM half eval samples: 4815
+- La submuestra es deterministica y shuffled por seed dentro de cada archivo.
+{
+  "split_strategy": "precomputed_files",
+  "train_file": "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl",
+  "eval_file": "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl",
+  "total_rows": 24074,
+  "train_rows": 19259,
+  "eval_rows": 4815,
+  "number_of_stories_train": 15,
+  "number_of_stories_eval": 5,
+  "story_overlap_count": 0,
+  "number_of_unique_text_train": 5691,
+  "number_of_unique_text_eval": 1516,
+  "exact_text_overlap_count": 0,
+  "train_examples": [
+    {
+      "row_index": 0,
+      "story_id": "Cómo funciona caminar en la nieve",
+      "split": "train",
+      "source_file": "sub-003.json",
+      "trial_id": "Cómo funciona caminar en la nieve::sub-003::seg_0000",
+      "n_words": 4,
+      "text": "¡Abrigate! Mi mamá me"
+    },
+    {
+      "row_index": 1,
+      "story_id": "Cómo funciona caminar en la nieve",
+      "split": "train",
+      "source_file": "sub-003.json",
+      "trial_id": "Cómo funciona caminar en la nieve::sub-003::seg_0001",
+      "n_words": 16,
+      "text": "El invierno puede ser tanto una molestia como una aventura cada vez que salimos de casa."
+    },
+    {
+      "row_index": 2,
+      "story_id": "Cómo funciona caminar en la nieve",
+      "split": "train",
+      "source_file": "sub-003.json",
+      "trial_id": "Cómo funciona caminar en la nieve::sub-003::seg_0002",
+      "n_words": 53,
+      "text": "En muy poco tiempo el paisaje pierde la mayoría de sus colores y si me guiara solo por mis ojos tranquilamente podría concluir que todo es parte de una película antigua en escala de grises, con los copos de nieve haciendo las veces del ruido en la imagen de las viejas proyecciones cinematográficas."
+    },
+    {
+      "row_index": 3,
+      "story_id": "Cómo funciona caminar en la nieve",
+      "split": "train",
+      "source_file": "sub-003.json",
+      "trial_id": "Cómo funciona caminar en la nieve::sub-003::seg_0003",
+      "n_words": 35,
+      "text": "Envuelto en el silencio con el que empiezan todos los poemas invernales, el crujir de mis pasos insinúa que aunque el horizonte se disuelva ya no estoy en el mismo lugar desde el que partí."
+    },
+    {
+      "row_index": 4,
+      "story_id": "Cómo funciona caminar en la nieve",
+      "split": "train",
+      "source_file": "sub-003.json",
+      "trial_id": "Cómo funciona caminar en la nieve::sub-003::seg_0004",
+      "n_words": 72,
+      "text": "Cada tanto irrumpe el sonido de una rama que ya no pudo soportar el azote del clima y cedió para llegar finalmente al suelo, donde quizá se convierta en la casita de una familia recién formada de liebres y algún día en el alimento de un retoño como el que supieron ser esos árboles imponentes que ahora me protegen de la nieve, que cae con todas las intenciones de teñirme de blanco."
+    }
+  ],
+  "eval_examples": [
+    {
+      "row_index": 0,
+      "story_id": "Ahora debería reírme, si no estuviera muerto",
+      "split": "test",
+      "source_file": "sub-001.json",
+      "trial_id": "Ahora debería reírme, si no estuviera muerto::sub-001::seg_0000",
+      "n_words": 21,
+      "text": "hubo dos mujeres casadas que se trenzaron en una disputa para ver cuál de las dos tenía un marido más imbécil."
+    },
+    {
+      "row_index": 1,
+      "story_id": "Ahora debería reírme, si no estuviera muerto",
+      "split": "test",
+      "source_file": "sub-001.json",
+      "trial_id": "Ahora debería reírme, si no estuviera muerto::sub-001::seg_0001",
+      "n_words": 23,
+      "text": "no llegaban a ponerse de acuerdo, al final decidieron que los pondrían a prueba para ver si realmente eran tan imbéciles como parecía."
+    },
+    {
+      "row_index": 5,
+      "story_id": "Ahora debería reírme, si no estuviera muerto",
+      "split": "test",
+      "source_file": "sub-001.json",
+      "trial_id": "Ahora debería reírme, si no estuviera muerto::sub-001::seg_0005",
+      "n_words": 29,
+      "text": "sonrió y le dijo que era bastante normal que él no viera nada, porque estaba usando un tipo de lana tan fina que no era perceptible por el ojo"
+    },
+    {
+      "row_index": 6,
+      "story_id": "Ahora debería reírme, si no estuviera muerto",
+      "split": "test",
+      "source_file": "sub-001.json",
+      "trial_id": "Ahora debería reírme, si no estuviera muerto::sub-001::seg_0006",
+      "n_words": 14,
+      "text": "esa lana tan genial y delicada le iba a hacer unas prendas nuevas para"
+    },
+    {
+      "row_index": 10,
+      "story_id": "Ahora debería reírme, si no estuviera muerto",
+      "split": "test",
+      "source_file": "sub-001.json",
+      "trial_id": "Ahora debería reírme, si no estuviera muerto::sub-001::seg_0010",
+      "n_words": 18,
+      "text": "marido iba a verla de vez en cuando, y seguía maravillándose de la depurada técnica de su esposa."
+    }
+  ]
+}
+/home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+[Paso 7 BETO] epoch 1/8 (12.5%) train_mlm_loss=0.836550 eval_mlm_loss=4.935240 steps=4815
+[Paso 7 BETO] epoch 2/8 (25.0%) train_mlm_loss=0.304559 eval_mlm_loss=6.151649 steps=4815
+[Paso 7 BETO] epoch 3/8 (37.5%) train_mlm_loss=0.180452 eval_mlm_loss=7.036329 steps=4815
+[Paso 7 BETO] epoch 4/8 (50.0%) train_mlm_loss=0.132438 eval_mlm_loss=7.586062 steps=4815
+Pasos/auditoria_pre_corridas_finales/comandos_8_corridas_half_data.sh: line 102: 36397 Illegal instruction     (core dumped) "$PYTHON_BIN" train_mlm_beto_baseline_step7_pretrain.py --train_file "$MLM_TRAIN_FILE" --eval_file "$MLM_EVAL_FILE" --model_name_or_path "$BETO_BASE_MODEL" --measured_text_field text --measured_word_id_field word_id --output_dir "$BASELINE_PRETRAIN_OUT" --max_seq_length 128 --max_train_samples "$MLM_HALF_TRAIN_SAMPLES" --max_eval_samples "$MLM_HALF_EVAL_SAMPLES" --per_device_train_batch_size 4 --per_device_eval_batch_size 4 --num_train_epochs 8 --learning_rate 5e-5 --max_masked_positions 3 --split_strategy precomputed_files --split_report_path "$BASELINE_PRETRAIN_OUT/split_report.json" --save_every_epoch True --seed "$SEED_PRETRAINING"

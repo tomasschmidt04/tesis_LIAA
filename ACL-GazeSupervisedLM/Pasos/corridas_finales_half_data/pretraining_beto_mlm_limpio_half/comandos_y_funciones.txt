@@ -1,0 +1,18 @@
+COMANDOS Y FUNCIONES - PASO 7 BASELINE
+=====================================
+
+Comando ejecutado
+python train_mlm_beto_baseline_step7_pretrain.py --model_name_or_path dccuchile/bert-base-spanish-wwm-cased --measured_text_field text --measured_word_id_field word_id --split train --output_dir "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half" --max_seq_length 128 --max_train_samples 19259 --max_eval_samples 4815 --per_device_train_batch_size 4 --per_device_eval_batch_size 4 --num_train_epochs 8 --learning_rate 5e-05 --max_masked_positions 3 --save_every_epoch True --seed 13 --split_strategy precomputed_files --eval_sentence_position_mod 10 --eval_sentence_position_remainder 5 --dry_run_split_only False --train_file "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl" --eval_file "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl" --split_report_path "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/split_report.json"
+
+Funciones / modulos usados
+- measured_scanpath_utils.load_measured_scanpath_dataset
+- measured_scanpath_utils.build_mlm_train_eval_datasets
+- measured_scanpath_utils.build_precomputed_file_train_eval_datasets
+- measured_scanpath_utils.build_measured_single_sentence_features
+- train_mlm_scanpath_step5.build_static_masked_inputs_and_labels
+- transformers.AutoTokenizer.from_pretrained
+- transformers.AutoModelForMaskedLM.from_pretrained
+- torch.optim.AdamW
+- model.save_pretrained
+- tokenizer.save_pretrained
+- loss_curve_utils.write_loss_curve_rows

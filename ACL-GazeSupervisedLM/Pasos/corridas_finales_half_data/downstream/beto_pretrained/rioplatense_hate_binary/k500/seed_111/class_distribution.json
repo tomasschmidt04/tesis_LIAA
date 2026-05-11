@@ -1,0 +1,14 @@
+{
+  "train": {
+    "no_hate": 425,
+    "hate": 75
+  },
+  "validation": {
+    "no_hate": 424,
+    "hate": 76
+  },
+  "test": {
+    "no_hate": 959,
+    "hate": 175
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "test_loss": 1.2017831802368164,
+  "test_accuracy": 0.8051146384479718,
+  "test_macro_f1": 0.5483870967741935,
+  "test_precision": 0.27884615384615385,
+  "test_recall": 0.1657142857142857,
+  "test_f1": 0.2078853046594982,
+  "test_f1_hate": 0.2078853046594982,
+  "test_f1_no_hate": 0.8888888888888888,
+  "test_combined_score": 0.44324595328435573,
+  "test_runtime": 2.3301,
+  "test_samples_per_second": 486.683,
+  "test_steps_per_second": 15.45,
+  "epoch": 20.0
+}

@@ -1,0 +1,148 @@
+PASO 7 BASELINE - Preentrenamiento BETO sin rama scanpath
+
+----------------------------------------
+Configuracion
+----------------------------------------
+dataset: None
+train_file: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl
+eval_file: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl
+model_name_or_path: dccuchile/bert-base-spanish-wwm-cased
+tokenizer: BertTokenizerFast
+vocab_size: 31002
+model_type: bert
+hidden_size: 768
+num_hidden_layers: 12
+max_train_samples: 19259
+max_eval_samples: 4815
+epochs: 8
+batch_size: 4
+lr: 5e-05
+max_seq_length: 128
+seed: 13
+device: cuda
+split_strategy: precomputed_files
+split_report: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/split_report.json
+
+----------------------------------------
+Batch debug 0 (epoch 1)
+----------------------------------------
+input_ids.shape: (4, 62)
+labels.shape: (4, 62)
+logits.shape: (4, 62, 31002)
+mlm_loss: 1.4053301811218262
+
+----------------------------------------
+Batch debug 1 (epoch 1)
+----------------------------------------
+input_ids.shape: (4, 88)
+labels.shape: (4, 88)
+logits.shape: (4, 88, 31002)
+mlm_loss: 2.7797701358795166
+
+----------------------------------------
+Epoch 1 summary
+----------------------------------------
+mean_mlm_loss: 0.8267776749906278
+num_steps: 4815
+duration_sec: 243.55924949099995
+checkpoint_saved_to: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_1
+best_checkpoint_updated: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/best_checkpoint
+Evaluacion minima:
+- eval_mean_mlm_loss: 4.9788826240158555
+
+----------------------------------------
+Epoch 2 summary
+----------------------------------------
+mean_mlm_loss: 0.29668549307111747
+num_steps: 4815
+duration_sec: 244.347271332
+checkpoint_saved_to: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_2
+Evaluacion minima:
+- eval_mean_mlm_loss: 6.394082255240691
+
+----------------------------------------
+Epoch 3 summary
+----------------------------------------
+mean_mlm_loss: 0.17024967228456245
+num_steps: 4815
+duration_sec: 244.18281574199978
+checkpoint_saved_to: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_3
+Evaluacion minima:
+- eval_mean_mlm_loss: 7.017541186952116
+
+----------------------------------------
+Epoch 4 summary
+----------------------------------------
+mean_mlm_loss: 0.13792527904446303
+num_steps: 4815
+duration_sec: 245.20720374099983
+checkpoint_saved_to: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_4
+Evaluacion minima:
+- eval_mean_mlm_loss: 7.813778250914475
+
+----------------------------------------
+Epoch 5 summary
+----------------------------------------
+mean_mlm_loss: 0.1283141461532034
+num_steps: 4815
+duration_sec: 244.4430689730002
+checkpoint_saved_to: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_5
+Evaluacion minima:
+- eval_mean_mlm_loss: 7.832674383919104
+
+----------------------------------------
+Epoch 6 summary
+----------------------------------------
+mean_mlm_loss: 0.10901136387239654
+num_steps: 4815
+duration_sec: 244.10557908400006
+checkpoint_saved_to: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_6
+Evaluacion minima:
+- eval_mean_mlm_loss: 8.112396645585564
+
+----------------------------------------
+Epoch 7 summary
+----------------------------------------
+mean_mlm_loss: 0.09841113261174725
+num_steps: 4815
+duration_sec: 243.54021494900007
+checkpoint_saved_to: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_7
+Evaluacion minima:
+- eval_mean_mlm_loss: 8.678917790568152
+
+----------------------------------------
+Epoch 8 summary
+----------------------------------------
+mean_mlm_loss: 0.09720307743903439
+num_steps: 4815
+duration_sec: 243.6725747119999
+checkpoint_saved_to: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_8
+Evaluacion minima:
+- eval_mean_mlm_loss: 9.188782507002948
+
+----------------------------------------
+Training final summary
+----------------------------------------
+num_steps: 38520
+initial_mlm_loss: 1.4053301811218262
+final_mlm_loss: 0.25902801752090454
+checkpoints_guardados:
+- Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_1
+- Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_2
+- Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_3
+- Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_4
+- Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_5
+- Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_6
+- Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_7
+- Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_epoch_8
+- Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_final
+best_checkpoint: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/best_checkpoint
+final_checkpoint: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/checkpoint_final
+loss_curves_csv: Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/loss_curves.csv
+status:
+- training OK
+- checkpointing OK
+
+Nota:
+- Esta corrida usa los mismos textos alineados del pipeline measured, pero no instancia ni usa la rama scanpath.
+- La loss es solo MLM estandar del modelo BETO base.

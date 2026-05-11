@@ -1,0 +1,25 @@
+{
+  "total_steps": 2,
+  "train_size": 4,
+  "eval_size": 2,
+  "epoch_summaries": [
+    {
+      "epoch": 1,
+      "mean_mlm_loss": 7.032213926315308,
+      "num_steps": 2,
+      "duration_sec": 0.049932010006159544,
+      "eval": {
+        "mean_mlm_loss": 6.960085391998291
+      },
+      "best_checkpoint_updated": "Pasos/paso_7_precomputed_story_split_beto_baseline_smoke/best_checkpoint"
+    }
+  ],
+  "checkpoint_paths": [
+    "Pasos/paso_7_precomputed_story_split_beto_baseline_smoke/checkpoint_final"
+  ],
+  "best_checkpoint_path": "Pasos/paso_7_precomputed_story_split_beto_baseline_smoke/best_checkpoint",
+  "final_checkpoint_path": "Pasos/paso_7_precomputed_story_split_beto_baseline_smoke/checkpoint_final",
+  "loss_curves_path": "Pasos/paso_7_precomputed_story_split_beto_baseline_smoke/loss_curves.csv",
+  "split_report_path": "Pasos/paso_7_precomputed_story_split_beto_baseline_smoke/split_report.json",
+  "dry_run_split_only": false
+}

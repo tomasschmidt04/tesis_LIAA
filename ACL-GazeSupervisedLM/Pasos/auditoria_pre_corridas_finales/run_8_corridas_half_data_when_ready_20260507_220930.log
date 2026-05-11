@@ -1,0 +1,4 @@
+[2026-05-07 22:09:30] Watcher iniciado para las 8 corridas half-data.
+[2026-05-07 22:09:30] Condiciones: nvidia-smi OK y disco libre >= 25G.
+[2026-05-07 22:09:30] Launcher: Pasos/auditoria_pre_corridas_finales/comandos_8_corridas_half_data.sh
+[2026-05-07 22:09:30] Esperando GPU: nvidia-smi todavia no responde.

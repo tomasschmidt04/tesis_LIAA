@@ -1,0 +1,196 @@
+{
+  "total_steps": 192600,
+  "train_size": 38518,
+  "eval_size": 9630,
+  "epoch_summaries": [
+    {
+      "epoch": 1,
+      "mean_mlm_loss": 0.6005610177769417,
+      "num_steps": 9630,
+      "duration_sec": 487.2773500330004,
+      "eval": {
+        "mean_mlm_loss": 5.881917082045561
+      },
+      "best_checkpoint_updated": "Pasos/corridas_finales_full_20ep/pretraining_beto_mlm_limpio/best_checkpoint"
+    },
+    {
+      "epoch": 2,
+      "mean_mlm_loss": 0.25855345200094726,
+      "num_steps": 9630,
+      "duration_sec": 489.6359791190007,
+      "eval": {
+        "mean_mlm_loss": 7.418842219336089
+      }
+    },
+    {
+      "epoch": 3,
+      "mean_mlm_loss": 0.16251291112231633,
+      "num_steps": 9630,
+      "duration_sec": 488.5697093660001,
+      "eval": {
+        "mean_mlm_loss": 8.020099438603138
+      }
+    },
+    {
+      "epoch": 4,
+      "mean_mlm_loss": 0.12980722308956721,
+      "num_steps": 9630,
+      "duration_sec": 488.42689869100104,
+      "eval": {
+        "mean_mlm_loss": 9.19906859530563
+      }
+    },
+    {
+      "epoch": 5,
+      "mean_mlm_loss": 0.11652404300271572,
+      "num_steps": 9630,
+      "duration_sec": 488.68224063600064,
+      "eval": {
+        "mean_mlm_loss": 9.495027590530656
+      }
+    },
+    {
+      "epoch": 6,
+      "mean_mlm_loss": 0.09597375002332122,
+      "num_steps": 9630,
+      "duration_sec": 489.81822442299926,
+      "eval": {
+        "mean_mlm_loss": 9.552326873093348
+      }
+    },
+    {
+      "epoch": 7,
+      "mean_mlm_loss": 0.09496429676210925,
+      "num_steps": 9630,
+      "duration_sec": 489.33405037800185,
+      "eval": {
+        "mean_mlm_loss": 9.778705400386919
+      }
+    },
+    {
+      "epoch": 8,
+      "mean_mlm_loss": 0.08968001982784199,
+      "num_steps": 9630,
+      "duration_sec": 490.35711133499717,
+      "eval": {
+        "mean_mlm_loss": 9.735316374571221
+      }
+    },
+    {
+      "epoch": 9,
+      "mean_mlm_loss": 0.07817880592064627,
+      "num_steps": 9630,
+      "duration_sec": 489.39380526400055,
+      "eval": {
+        "mean_mlm_loss": 9.969776950900341
+      }
+    },
+    {
+      "epoch": 10,
+      "mean_mlm_loss": 0.07466030631971768,
+      "num_steps": 9630,
+      "duration_sec": 489.62794522400145,
+      "eval": {
+        "mean_mlm_loss": 10.2839831218767
+      }
+    },
+    {
+      "epoch": 11,
+      "mean_mlm_loss": 0.07421062087583052,
+      "num_steps": 9630,
+      "duration_sec": 491.50248869200004,
+      "eval": {
+        "mean_mlm_loss": 9.86425727536512
+      }
+    },
+    {
+      "epoch": 12,
+      "mean_mlm_loss": 0.06812307892412771,
+      "num_steps": 9630,
+      "duration_sec": 493.48521833700215,
+      "eval": {
+        "mean_mlm_loss": 10.378125056475897
+      }
+    },
+    {
+      "epoch": 13,
+      "mean_mlm_loss": 0.06700622436487139,
+      "num_steps": 9630,
+      "duration_sec": 494.31202661000134,
+      "eval": {
+        "mean_mlm_loss": 10.175319085485516
+      }
+    },
+    {
+      "epoch": 14,
+      "mean_mlm_loss": 0.06359024685903386,
+      "num_steps": 9630,
+      "duration_sec": 496.85162486000263,
+      "eval": {
+        "mean_mlm_loss": 10.699905711551045
+      }
+    },
+    {
+      "epoch": 15,
+      "mean_mlm_loss": 0.06274152228702759,
+      "num_steps": 9630,
+      "duration_sec": 497.2200719079992,
+      "eval": {
+        "mean_mlm_loss": 9.947650419913257
+      }
+    },
+    {
+      "epoch": 16,
+      "mean_mlm_loss": 0.062356539007569135,
+      "num_steps": 9630,
+      "duration_sec": 494.11772226799803,
+      "eval": {
+        "mean_mlm_loss": 10.31739954496935
+      }
+    },
+    {
+      "epoch": 17,
+      "mean_mlm_loss": 0.058812069598837335,
+      "num_steps": 9630,
+      "duration_sec": 493.30830384599903,
+      "eval": {
+        "mean_mlm_loss": 10.179985603224795
+      }
+    },
+    {
+      "epoch": 18,
+      "mean_mlm_loss": 0.05821412730704813,
+      "num_steps": 9630,
+      "duration_sec": 492.73128282700054,
+      "eval": {
+        "mean_mlm_loss": 10.453361595884907
+      }
+    },
+    {
+      "epoch": 19,
+      "mean_mlm_loss": 0.054254174006164266,
+      "num_steps": 9630,
+      "duration_sec": 492.01355803000115,
+      "eval": {
+        "mean_mlm_loss": 10.418096360277099
+      }
+    },
+    {
+      "epoch": 20,
+      "mean_mlm_loss": 0.054413748813346034,
+      "num_steps": 9630,
+      "duration_sec": 491.8902917510022,
+      "eval": {
+        "mean_mlm_loss": 10.106460834856446
+      }
+    }
+  ],
+  "checkpoint_paths": [
+    "Pasos/corridas_finales_full_20ep/pretraining_beto_mlm_limpio/checkpoint_final"
+  ],
+  "best_checkpoint_path": "Pasos/corridas_finales_full_20ep/pretraining_beto_mlm_limpio/best_checkpoint",
+  "final_checkpoint_path": "Pasos/corridas_finales_full_20ep/pretraining_beto_mlm_limpio/checkpoint_final",
+  "loss_curves_path": "Pasos/corridas_finales_full_20ep/pretraining_beto_mlm_limpio/loss_curves.csv",
+  "split_report_path": "Pasos/corridas_finales_full_20ep/pretraining_beto_mlm_limpio/split_report.json",
+  "dry_run_split_only": false
+}

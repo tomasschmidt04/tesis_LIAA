@@ -1,0 +1,3 @@
+epoch,split,loss_total_mean,loss_standard_mean,loss_scanpath_mean,augweight,num_batches
+1,train,7.032213926315308,7.032213926315308,nan,nan,2
+1,eval,6.960085391998291,6.960085391998291,nan,nan,1

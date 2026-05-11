@@ -1,0 +1,76 @@
+COMANDOS Y FUNCIONES - RESUMEN LOW-RESOURCE
+===========================================
+
+Script usado
+- summarize_low_resource_results.py
+
+Comando ejecutado
+- python summarize_low_resource_results.py --output_dir Pasos/resumen_low_resource
+
+Carpetas recorridas
+- Pasos
+- result
+- .
+
+Archivos leidos/detectados
+- Pasos/Paso 7 Preentrenamiento BETO Full/comandos_y_funciones.txt
+- Pasos/paso_5/comandos_y_funciones.txt
+- Pasos/paso_6/comandos_y_funciones.txt
+- Pasos/paso_7_scanpath_full_8ep/comandos_y_funciones.txt
+- Pasos/paso_7b/comandos_y_funciones.txt
+- Pasos/paso_7c_serio/comandos_y_funciones.txt
+- Pasos/paso_9_serio/xnli_es/checkpoint-3750/trainer_state.json
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/README_paso_9_serio.txt
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/comandos_y_funciones.txt
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020/checkpoint-1125/trainer_state.json
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020/eval_results.json
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020/task_metadata.json
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020/train_results.txt
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020/trainer_state.json
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/salida_spanish_downstream_serio.txt
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/xnli_es/checkpoint-250/trainer_state.json
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/xnli_es/eval_results.json
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/xnli_es/task_metadata.json
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/xnli_es/train_results.txt
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/xnli_es/trainer_state.json
+- Pasos/paso_9_serio_intermedio_seed13/README_paso_9_serio.txt
+- Pasos/paso_9_serio_intermedio_seed13/comandos_y_funciones.txt
+- Pasos/paso_9_serio_intermedio_seed13/intertass2020/checkpoint-2400/trainer_state.json
+- Pasos/paso_9_serio_intermedio_seed13/intertass2020/eval_results.json
+- Pasos/paso_9_serio_intermedio_seed13/intertass2020/task_metadata.json
+- Pasos/paso_9_serio_intermedio_seed13/intertass2020/train_results.txt
+- Pasos/paso_9_serio_intermedio_seed13/intertass2020/trainer_state.json
+- Pasos/paso_9_serio_intermedio_seed13/salida_spanish_downstream_serio.txt
+- Pasos/paso_9_serio_intermedio_seed13/xnli_es/checkpoint-22500/trainer_state.json
+- Pasos/paso_9_serio_intermedio_seed13/xnli_es/eval_results.json
+- Pasos/paso_9_serio_intermedio_seed13/xnli_es/task_metadata.json
+- Pasos/paso_9_serio_intermedio_seed13/xnli_es/train_results.txt
+- Pasos/paso_9_serio_intermedio_seed13/xnli_es/trainer_state.json
+- Pasos/paso_9_serio_low_resource_k1000_seed13/README_paso_9_serio.txt
+- Pasos/paso_9_serio_low_resource_k1000_seed13/comandos_y_funciones.txt
+- Pasos/paso_9_serio_low_resource_k1000_seed13/intertass2020/checkpoint-1125/trainer_state.json
+- Pasos/paso_9_serio_low_resource_k1000_seed13/intertass2020/eval_results.json
+- Pasos/paso_9_serio_low_resource_k1000_seed13/intertass2020/task_metadata.json
+- Pasos/paso_9_serio_low_resource_k1000_seed13/intertass2020/train_results.txt
+- Pasos/paso_9_serio_low_resource_k1000_seed13/intertass2020/trainer_state.json
+- Pasos/paso_9_serio_low_resource_k1000_seed13/salida_spanish_downstream_serio.txt
+- Pasos/paso_9_serio_low_resource_k1000_seed13/xnli_es/checkpoint-625/trainer_state.json
+- Pasos/paso_9_serio_low_resource_k1000_seed13/xnli_es/eval_results.json
+- Pasos/paso_9_serio_low_resource_k1000_seed13/xnli_es/task_metadata.json
+- Pasos/paso_9_serio_low_resource_k1000_seed13/xnli_es/train_results.txt
+- Pasos/paso_9_serio_low_resource_k1000_seed13/xnli_es/trainer_state.json
+
+Funciones principales
+- discover_relevant_files
+- discover_task_dirs
+- row_from_task_dir
+- normalize_dataframe
+- build_summary_text
+- plot_metric
+
+Outputs generados
+- Pasos/resumen_low_resource/resumen_metricas_low_resource.csv
+- Pasos/resumen_low_resource/resumen_metricas_low_resource.txt
+- Pasos/resumen_low_resource/grafico_accuracy_low_resource.png
+- Pasos/resumen_low_resource/grafico_macro_f1_low_resource.png
+- Pasos/resumen_low_resource/comandos_y_funciones.txt

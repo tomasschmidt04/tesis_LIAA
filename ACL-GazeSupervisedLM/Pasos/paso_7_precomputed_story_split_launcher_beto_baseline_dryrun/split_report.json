@@ -1,0 +1,152 @@
+{
+  "split_strategy": "precomputed_files",
+  "train_file": "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl",
+  "eval_file": "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl",
+  "story_id_field": "cuento",
+  "text_field": "text",
+  "seed": 13,
+  "max_train_samples": -1,
+  "max_eval_samples": -1,
+  "train_truncated_after_clean_split": false,
+  "eval_truncated_after_clean_split": false,
+  "total_rows": 48148,
+  "pre_truncation_train_rows": 38518,
+  "pre_truncation_eval_rows": 9630,
+  "train_rows": 38518,
+  "eval_rows": 9630,
+  "train_percentage_rows": 79.9992,
+  "eval_percentage_rows": 20.0008,
+  "number_of_stories_train": 15,
+  "number_of_stories_eval": 5,
+  "train_stories": [
+    "Cómo funciona caminar en la nieve",
+    "Cómo funcionan los bolsillos",
+    "Educar para escalar y bucear",
+    "El almohadón de plumas",
+    "El espejo",
+    "Embarrar la magia",
+    "La canción que cantábamos todos los días",
+    "La de la Obsesión por la Patineta",
+    "La gallina degollada",
+    "La lluvia de fuego",
+    "La noche de los feos",
+    "Las fotografías",
+    "Rubí y el lago danzante",
+    "Una rosa para Emilia",
+    "Wakefield"
+  ],
+  "eval_stories": [
+    "Ahora debería reírme, si no estuviera muerto",
+    "Buenos Aires",
+    "El golpe de gracia",
+    "La máscara de la Muerte Roja",
+    "La salud de los enfermos"
+  ],
+  "story_overlap_count": 0,
+  "story_overlap_examples": [],
+  "number_of_unique_text_train": 8413,
+  "number_of_unique_text_eval": 2345,
+  "exact_text_overlap_count": 0,
+  "exact_text_overlap_examples": [],
+  "split_label_mismatch_count": 0,
+  "split_label_mismatch_examples": [],
+  "missing_text_count": 0,
+  "missing_text_examples": {
+    "train": [],
+    "eval": []
+  },
+  "train_examples": [
+    {
+      "row_index": 0,
+      "story_id": "Cómo funciona caminar en la nieve",
+      "split": "train",
+      "source_file": "sub-003.json",
+      "trial_id": "Cómo funciona caminar en la nieve::sub-003::seg_0000",
+      "n_words": 4,
+      "text": "¡Abrigate! Mi mamá me"
+    },
+    {
+      "row_index": 1,
+      "story_id": "Cómo funciona caminar en la nieve",
+      "split": "train",
+      "source_file": "sub-003.json",
+      "trial_id": "Cómo funciona caminar en la nieve::sub-003::seg_0001",
+      "n_words": 16,
+      "text": "El invierno puede ser tanto una molestia como una aventura cada vez que salimos de casa."
+    },
+    {
+      "row_index": 2,
+      "story_id": "Cómo funciona caminar en la nieve",
+      "split": "train",
+      "source_file": "sub-003.json",
+      "trial_id": "Cómo funciona caminar en la nieve::sub-003::seg_0002",
+      "n_words": 53,
+      "text": "En muy poco tiempo el paisaje pierde la mayoría de sus colores y si me guiara solo por mis ojos tranquilamente podría concluir que todo es parte de una película antigua en escala de grises, con los copos de nieve haciendo las veces del ruido en la imagen de las viejas proyecciones cinematográficas."
+    },
+    {
+      "row_index": 3,
+      "story_id": "Cómo funciona caminar en la nieve",
+      "split": "train",
+      "source_file": "sub-003.json",
+      "trial_id": "Cómo funciona caminar en la nieve::sub-003::seg_0003",
+      "n_words": 35,
+      "text": "Envuelto en el silencio con el que empiezan todos los poemas invernales, el crujir de mis pasos insinúa que aunque el horizonte se disuelva ya no estoy en el mismo lugar desde el que partí."
+    },
+    {
+      "row_index": 4,
+      "story_id": "Cómo funciona caminar en la nieve",
+      "split": "train",
+      "source_file": "sub-003.json",
+      "trial_id": "Cómo funciona caminar en la nieve::sub-003::seg_0004",
+      "n_words": 72,
+      "text": "Cada tanto irrumpe el sonido de una rama que ya no pudo soportar el azote del clima y cedió para llegar finalmente al suelo, donde quizá se convierta en la casita de una familia recién formada de liebres y algún día en el alimento de un retoño como el que supieron ser esos árboles imponentes que ahora me protegen de la nieve, que cae con todas las intenciones de teñirme de blanco."
+    }
+  ],
+  "eval_examples": [
+    {
+      "row_index": 0,
+      "story_id": "Ahora debería reírme, si no estuviera muerto",
+      "split": "test",
+      "source_file": "sub-001.json",
+      "trial_id": "Ahora debería reírme, si no estuviera muerto::sub-001::seg_0000",
+      "n_words": 21,
+      "text": "hubo dos mujeres casadas que se trenzaron en una disputa para ver cuál de las dos tenía un marido más imbécil."
+    },
+    {
+      "row_index": 1,
+      "story_id": "Ahora debería reírme, si no estuviera muerto",
+      "split": "test",
+      "source_file": "sub-001.json",
+      "trial_id": "Ahora debería reírme, si no estuviera muerto::sub-001::seg_0001",
+      "n_words": 23,
+      "text": "no llegaban a ponerse de acuerdo, al final decidieron que los pondrían a prueba para ver si realmente eran tan imbéciles como parecía."
+    },
+    {
+      "row_index": 2,
+      "story_id": "Ahora debería reírme, si no estuviera muerto",
+      "split": "test",
+      "source_file": "sub-001.json",
+      "trial_id": "Ahora debería reírme, si no estuviera muerto::sub-001::seg_0002",
+      "n_words": 8,
+      "text": "las mujeres usó la siguiente maniobra para demostrarlo."
+    },
+    {
+      "row_index": 3,
+      "story_id": "Ahora debería reírme, si no estuviera muerto",
+      "split": "test",
+      "source_file": "sub-001.json",
+      "trial_id": "Ahora debería reírme, si no estuviera muerto::sub-001::seg_0003",
+      "n_words": 26,
+      "text": "el marido llegó a su casa después del trabajo, ella agarró su rueca y se puso a hilar con paciencia una lana de oveja completamente imaginaria."
+    },
+    {
+      "row_index": 4,
+      "story_id": "Ahora debería reírme, si no estuviera muerto",
+      "split": "test",
+      "source_file": "sub-001.json",
+      "trial_id": "Ahora debería reírme, si no estuviera muerto::sub-001::seg_0004",
+      "n_words": 25,
+      "text": "no tenía nada entre las manos, el marido le preguntó si estaba tan loca como para pasarse tanto tiempo haciendo algo que no tenía sentido."
+    }
+  ]
+}

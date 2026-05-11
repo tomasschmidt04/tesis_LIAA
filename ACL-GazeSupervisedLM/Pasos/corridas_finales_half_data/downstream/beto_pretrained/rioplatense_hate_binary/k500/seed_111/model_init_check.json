@@ -1,0 +1,38 @@
+{
+  "task_name": "rioplatense_hate_binary",
+  "model_name_or_path": "Pasos/corridas_finales_half_data/pretraining_beto_mlm_limpio_half/best_checkpoint",
+  "output_dir": "Pasos/corridas_finales_half_data/downstream/beto_pretrained/rioplatense_hate_binary/k500/seed_111",
+  "num_labels": 2,
+  "label2id": {
+    "no_hate": 0,
+    "hate": 1
+  },
+  "id2label": {
+    "0": "no_hate",
+    "1": "hate"
+  },
+  "dataset_path": null,
+  "use_context": false,
+  "train_as_val": true,
+  "max_train_samples": 500,
+  "low_resource_data_seed": 111,
+  "split_sizes": {
+    "train": 500,
+    "validation": 500,
+    "test": 1134
+  },
+  "class_distribution": {
+    "train": {
+      "no_hate": 425,
+      "hate": 75
+    },
+    "validation": {
+      "no_hate": 424,
+      "hate": 76
+    },
+    "test": {
+      "no_hate": 959,
+      "hate": 175
+    }
+  }
+}

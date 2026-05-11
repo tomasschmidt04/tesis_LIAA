@@ -1,0 +1,100 @@
+PASO 7 - Entrenamiento mas grande del modelo con losses combinadas + Beto
+
+----------------------------------------
+Configuracion
+----------------------------------------
+dataset: /home/tomi/tesis_LIAA/reading-et/aligned_output/aligned_scanpaths.jsonl
+model_name_or_path: hf-internal-testing/tiny-random-bert
+tokenizer: BertTokenizerFast
+vocab_size: 1124
+model_type: bert
+hidden_size: 32
+num_hidden_layers: 5
+max_train_samples: 4
+max_eval_samples: 2
+epochs: 1
+batch_size: 2
+lr: 0.001
+aux_weight: 0.1
+adaptive_scanpath_weight: False
+scanpath_weight_min: 0.05
+scanpath_weight_max: 0.5
+scanpath_weight_warmup_epochs: 1
+scanpath_weight_update_metric: auto
+max_seq_length: 32
+seed: 13
+device: cpu
+split_strategy: sentence_position
+split_report: Pasos/paso_3_lambda_adaptativo/smoke_augweight_fijo/split_report.json
+
+----------------------------------------
+Batch debug 0 (epoch 1)
+----------------------------------------
+input_ids.shape: (2, 9)
+labels.shape: (2, 9)
+main_mlm_logits.shape: (2, 9, 1124)
+scanpath_mlm_logits.shape: (2, 7, 1124)
+main_mlm_loss: 6.961505889892578
+scanpath_mlm_loss: 7.024143695831299
+scanpath_loss_weight: 0.1
+total_loss: 7.6639204025268555
+
+----------------------------------------
+Batch debug 1 (epoch 1)
+----------------------------------------
+input_ids.shape: (2, 32)
+labels.shape: (2, 32)
+main_mlm_logits.shape: (2, 32, 1124)
+scanpath_mlm_logits.shape: (2, 32, 1124)
+main_mlm_loss: 7.087494373321533
+scanpath_mlm_loss: 7.029432773590088
+scanpath_loss_weight: 0.1
+total_loss: 7.790437698364258
+
+----------------------------------------
+Epoch 1 summary
+----------------------------------------
+mean_main_mlm_loss: 7.024500131607056
+mean_scanpath_mlm_loss: 7.026788234710693
+mean_total_loss: 7.727179050445557
+scanpath_loss_weight_usado: 0.1
+scanpath_weight_update_metric: None
+scanpath_loss_for_weight_update: None
+initial_scanpath_loss_for_lambda: None
+scanpath_weight_progress: None
+next_scanpath_loss_weight: None
+scanpath_weight_warning: None
+num_steps: 2
+duration_sec: 0.030835779005428776
+best_checkpoint_updated: Pasos/paso_3_lambda_adaptativo/smoke_augweight_fijo/best_checkpoint
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 6.933247089385986
+- eval_mean_scanpath_mlm_loss: 7.030669689178467
+- eval_mean_total_loss: 7.6363139152526855
+
+----------------------------------------
+Training final summary
+----------------------------------------
+num_steps: 2
+initial_main_loss: 6.961505889892578
+final_main_loss: 7.087494373321533
+initial_scanpath_loss: 7.024143695831299
+final_scanpath_loss: 7.029432773590088
+initial_total_loss: 7.6639204025268555
+final_total_loss: 7.790437698364258
+checkpoints_guardados:
+- Pasos/paso_3_lambda_adaptativo/smoke_augweight_fijo/checkpoint_final
+best_checkpoint: Pasos/paso_3_lambda_adaptativo/smoke_augweight_fijo/best_checkpoint
+final_checkpoint: Pasos/paso_3_lambda_adaptativo/smoke_augweight_fijo/checkpoint_final
+loss_curves_csv: Pasos/paso_3_lambda_adaptativo/smoke_augweight_fijo/loss_curves.csv
+lambda_scanpath_log_csv: None
+status:
+- training OK
+- checkpointing OK
+
+Interpretacion breve:
+- ratio scanpath/main: 1.0003257318045085
+- ratio ponderado (aux_weight * scanpath)/main: 0.10003257318045083
+- sugerencia: la rama auxiliar pesa poco; si queres mas influencia scanpath, podria convenir subir aux_weight.
+- si las losses bajan o se mantienen estables entre epochs, el entrenamiento parece sano para esta escala intermedia.
+- la evaluacion minima ayuda a no depender solo de la loss de entrenamiento, aunque todavia no es un validation setup sofisticado.

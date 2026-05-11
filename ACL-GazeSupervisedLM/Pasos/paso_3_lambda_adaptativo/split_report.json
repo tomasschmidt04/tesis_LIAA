@@ -1,0 +1,107 @@
+{
+  "split_strategy": "sentence_position",
+  "story_id_field": "story_id",
+  "sentence_position_field": "period_block_start",
+  "text_field": "text",
+  "sentence_position_index_base": "0-based",
+  "eval_sentence_position_mod": 10,
+  "eval_sentence_position_remainder": 5,
+  "seed": 13,
+  "max_train_samples": 8,
+  "max_eval_samples": 5,
+  "train_truncated_after_clean_split": true,
+  "eval_truncated_after_clean_split": true,
+  "total_rows": 65671,
+  "pre_truncation_train_rows": 59251,
+  "pre_truncation_eval_rows": 6420,
+  "train_rows": 8,
+  "eval_rows": 5,
+  "number_of_stories_train": 7,
+  "number_of_stories_eval": 4,
+  "number_of_unique_text_train": 8,
+  "number_of_unique_text_eval": 5,
+  "exact_text_overlap_count": 0,
+  "story_sentence_overlap_count": 0,
+  "exact_text_overlap_examples": [],
+  "story_sentence_overlap_examples": [],
+  "eval_sentence_positions_used": [
+    5,
+    25,
+    35,
+    45
+  ],
+  "train_sentence_positions_used": [
+    0,
+    11,
+    20,
+    27,
+    33,
+    36,
+    38,
+    40
+  ],
+  "train_examples": [
+    {
+      "row_index": 8991,
+      "story_id": "Cómo funcionan los bolsillos",
+      "sentence_position": 38,
+      "text": "tomamos la posibilidad de las mujeres de llevar con ellas lo que quieran de algún modo “estamos limitando"
+    },
+    {
+      "row_index": 18882,
+      "story_id": "El espejo",
+      "sentence_position": 36,
+      "text": "después"
+    },
+    {
+      "row_index": 23645,
+      "story_id": "Embarrar la magia",
+      "sentence_position": 33,
+      "text": "llamada"
+    },
+    {
+      "row_index": 39041,
+      "story_id": "La lluvia de fuego",
+      "sentence_position": 20,
+      "text": "aire era un vaho caliente y con olor a pis, los árboles del jardín estaban negros y sin follaje y el piso estaba repleto de hojas carbonizadas..."
+    },
+    {
+      "row_index": 51673,
+      "story_id": "Las fotografías",
+      "sentence_position": 27,
+      "text": "alegría."
+    }
+  ],
+  "eval_examples": [
+    {
+      "row_index": 22486,
+      "story_id": "El golpe de gracia",
+      "sentence_position": 35,
+      "text": "tercero era el hermano mayor de Halcrow, Creede, que a medida que avanzaba veía cómo el capitán había matado, sin necesidad, a su hermano menor."
+    },
+    {
+      "row_index": 24724,
+      "story_id": "Embarrar la magia",
+      "sentence_position": 5,
+      "text": "Divino."
+    },
+    {
+      "row_index": 34445,
+      "story_id": "La gallina degollada",
+      "sentence_position": 45,
+      "text": "Lentamente avanzaron hacia el tapial, y cuando la nena estaba a punto de saltar al otro lado la agarraron del pie."
+    },
+    {
+      "row_index": 37300,
+      "story_id": "La gallina degollada",
+      "sentence_position": 25,
+      "text": "entonces entendieron, por fin, que la maldición había terminado."
+    },
+    {
+      "row_index": 60334,
+      "story_id": "Una rosa para Emilia",
+      "sentence_position": 35,
+      "text": "Así que la policía forzó la cerradura para poder"
+    }
+  ]
+}

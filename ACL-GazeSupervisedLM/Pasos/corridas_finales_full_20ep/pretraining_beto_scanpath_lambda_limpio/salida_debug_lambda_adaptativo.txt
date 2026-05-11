@@ -1,0 +1,37 @@
+PASO 3 - Debug lambda adaptativo scanpath
+=========================================
+
+Tabla de evolucion por epoch
+epoch | loss_scanpath_usada | progress | lambda_scanpath_t | lambda_scanpath_next | loss_mlm | loss_scanpath | loss_total | metric
+1 | 7.890178 | 0.000000 | 0.050000 | 0.050000 | 0.592409 | 3.685916 | 0.776704 | eval_loss_scanpath
+warning epoch 1: warmup activo: epoch 1 <= scanpath_weight_warmup_epochs=1; lambda_next queda en scanpath_weight_min.
+2 | 8.455438 | 0.000000 | 0.050000 | 0.050000 | 0.250036 | 1.199479 | 0.310010 | eval_loss_scanpath
+3 | 8.412530 | 0.000000 | 0.050000 | 0.050000 | 0.157812 | 0.703693 | 0.192996 | eval_loss_scanpath
+4 | 8.502354 | 0.000000 | 0.050000 | 0.050000 | 0.125255 | 0.508710 | 0.150690 | eval_loss_scanpath
+5 | 8.625899 | 0.000000 | 0.050000 | 0.050000 | 0.109185 | 0.407148 | 0.129543 | eval_loss_scanpath
+6 | 8.561035 | 0.000000 | 0.050000 | 0.050000 | 0.093806 | 0.333069 | 0.110459 | eval_loss_scanpath
+7 | 8.720357 | 0.000000 | 0.050000 | 0.050000 | 0.088080 | 0.291447 | 0.102652 | eval_loss_scanpath
+8 | 8.755609 | 0.000000 | 0.050000 | 0.050000 | 0.081327 | 0.246826 | 0.093668 | eval_loss_scanpath
+9 | 8.825384 | 0.000000 | 0.050000 | 0.050000 | 0.074080 | 0.217573 | 0.084959 | eval_loss_scanpath
+10 | 8.910758 | 0.000000 | 0.050000 | 0.050000 | 0.076138 | 0.196789 | 0.085978 | eval_loss_scanpath
+11 | 9.128635 | 0.000000 | 0.050000 | 0.050000 | 0.067531 | 0.174569 | 0.076260 | eval_loss_scanpath
+12 | 9.142124 | 0.000000 | 0.050000 | 0.050000 | 0.066162 | 0.156872 | 0.074006 | eval_loss_scanpath
+13 | 9.284481 | 0.000000 | 0.050000 | 0.050000 | 0.064027 | 0.147113 | 0.071383 | eval_loss_scanpath
+14 | 9.672051 | 0.000000 | 0.050000 | 0.050000 | 0.061907 | 0.134121 | 0.068613 | eval_loss_scanpath
+15 | 9.034403 | 0.000000 | 0.050000 | 0.050000 | 0.059345 | 0.123606 | 0.065525 | eval_loss_scanpath
+16 | 9.338162 | 0.000000 | 0.050000 | 0.050000 | 0.057236 | 0.115459 | 0.063009 | eval_loss_scanpath
+17 | 9.708440 | 0.000000 | 0.050000 | 0.050000 | 0.059367 | 0.110570 | 0.064895 | eval_loss_scanpath
+18 | 9.385066 | 0.000000 | 0.050000 | 0.050000 | 0.055412 | 0.101755 | 0.060500 | eval_loss_scanpath
+19 | 9.543401 | 0.000000 | 0.050000 | 0.050000 | 0.051564 | 0.095579 | 0.056343 | eval_loss_scanpath
+20 | 9.473492 | 0.000000 | 0.050000 | 0.050000 | 0.052530 | 0.093198 | 0.057190 | eval_loss_scanpath
+
+Validaciones esperadas
+- adaptive_scanpath_weight: True
+- lambda_min: 0.05
+- lambda_max: 0.5
+- warmup_epochs: 1
+- metric_choice: auto
+- lambda_log_csv: Pasos/corridas_finales_full_20ep/pretraining_beto_scanpath_lambda_limpio/lambda_scanpath_log.csv
+- lambda se actualiza solo con promedios por epoch, no por batch.
+- si current_scanpath_loss empeora respecto de initial_scanpath_loss, progress queda clipeado en 0.
+- si no hay eval_loss_scanpath en modo auto, se usa train_loss_scanpath_mean y se deja warning.

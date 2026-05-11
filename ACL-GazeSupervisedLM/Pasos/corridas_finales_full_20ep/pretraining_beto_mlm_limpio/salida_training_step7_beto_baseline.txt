@@ -1,0 +1,240 @@
+PASO 7 BASELINE - Preentrenamiento BETO sin rama scanpath
+
+----------------------------------------
+Configuracion
+----------------------------------------
+dataset: None
+train_file: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl
+eval_file: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl
+model_name_or_path: dccuchile/bert-base-spanish-wwm-cased
+tokenizer: BertTokenizerFast
+vocab_size: 31002
+model_type: bert
+hidden_size: 768
+num_hidden_layers: 12
+max_train_samples: 38518
+max_eval_samples: 9630
+epochs: 20
+batch_size: 4
+lr: 5e-05
+max_seq_length: 128
+seed: 13
+device: cuda
+split_strategy: precomputed_files
+split_report: Pasos/corridas_finales_full_20ep/pretraining_beto_mlm_limpio/split_report.json
+
+----------------------------------------
+Batch debug 0 (epoch 1)
+----------------------------------------
+input_ids.shape: (4, 62)
+labels.shape: (4, 62)
+logits.shape: (4, 62, 31002)
+mlm_loss: 1.4053301811218262
+
+----------------------------------------
+Batch debug 1 (epoch 1)
+----------------------------------------
+input_ids.shape: (4, 88)
+labels.shape: (4, 88)
+logits.shape: (4, 88, 31002)
+mlm_loss: 1.922455906867981
+
+----------------------------------------
+Epoch 1 summary
+----------------------------------------
+mean_mlm_loss: 0.6005610177769417
+num_steps: 9630
+duration_sec: 487.2773500330004
+best_checkpoint_updated: Pasos/corridas_finales_full_20ep/pretraining_beto_mlm_limpio/best_checkpoint
+Evaluacion minima:
+- eval_mean_mlm_loss: 5.881917082045561
+
+----------------------------------------
+Epoch 2 summary
+----------------------------------------
+mean_mlm_loss: 0.25855345200094726
+num_steps: 9630
+duration_sec: 489.6359791190007
+Evaluacion minima:
+- eval_mean_mlm_loss: 7.418842219336089
+
+----------------------------------------
+Epoch 3 summary
+----------------------------------------
+mean_mlm_loss: 0.16251291112231633
+num_steps: 9630
+duration_sec: 488.5697093660001
+Evaluacion minima:
+- eval_mean_mlm_loss: 8.020099438603138
+
+----------------------------------------
+Epoch 4 summary
+----------------------------------------
+mean_mlm_loss: 0.12980722308956721
+num_steps: 9630
+duration_sec: 488.42689869100104
+Evaluacion minima:
+- eval_mean_mlm_loss: 9.19906859530563
+
+----------------------------------------
+Epoch 5 summary
+----------------------------------------
+mean_mlm_loss: 0.11652404300271572
+num_steps: 9630
+duration_sec: 488.68224063600064
+Evaluacion minima:
+- eval_mean_mlm_loss: 9.495027590530656
+
+----------------------------------------
+Epoch 6 summary
+----------------------------------------
+mean_mlm_loss: 0.09597375002332122
+num_steps: 9630
+duration_sec: 489.81822442299926
+Evaluacion minima:
+- eval_mean_mlm_loss: 9.552326873093348
+
+----------------------------------------
+Epoch 7 summary
+----------------------------------------
+mean_mlm_loss: 0.09496429676210925
+num_steps: 9630
+duration_sec: 489.33405037800185
+Evaluacion minima:
+- eval_mean_mlm_loss: 9.778705400386919
+
+----------------------------------------
+Epoch 8 summary
+----------------------------------------
+mean_mlm_loss: 0.08968001982784199
+num_steps: 9630
+duration_sec: 490.35711133499717
+Evaluacion minima:
+- eval_mean_mlm_loss: 9.735316374571221
+
+----------------------------------------
+Epoch 9 summary
+----------------------------------------
+mean_mlm_loss: 0.07817880592064627
+num_steps: 9630
+duration_sec: 489.39380526400055
+Evaluacion minima:
+- eval_mean_mlm_loss: 9.969776950900341
+
+----------------------------------------
+Epoch 10 summary
+----------------------------------------
+mean_mlm_loss: 0.07466030631971768
+num_steps: 9630
+duration_sec: 489.62794522400145
+Evaluacion minima:
+- eval_mean_mlm_loss: 10.2839831218767
+
+----------------------------------------
+Epoch 11 summary
+----------------------------------------
+mean_mlm_loss: 0.07421062087583052
+num_steps: 9630
+duration_sec: 491.50248869200004
+Evaluacion minima:
+- eval_mean_mlm_loss: 9.86425727536512
+
+----------------------------------------
+Epoch 12 summary
+----------------------------------------
+mean_mlm_loss: 0.06812307892412771
+num_steps: 9630
+duration_sec: 493.48521833700215
+Evaluacion minima:
+- eval_mean_mlm_loss: 10.378125056475897
+
+----------------------------------------
+Epoch 13 summary
+----------------------------------------
+mean_mlm_loss: 0.06700622436487139
+num_steps: 9630
+duration_sec: 494.31202661000134
+Evaluacion minima:
+- eval_mean_mlm_loss: 10.175319085485516
+
+----------------------------------------
+Epoch 14 summary
+----------------------------------------
+mean_mlm_loss: 0.06359024685903386
+num_steps: 9630
+duration_sec: 496.85162486000263
+Evaluacion minima:
+- eval_mean_mlm_loss: 10.699905711551045
+
+----------------------------------------
+Epoch 15 summary
+----------------------------------------
+mean_mlm_loss: 0.06274152228702759
+num_steps: 9630
+duration_sec: 497.2200719079992
+Evaluacion minima:
+- eval_mean_mlm_loss: 9.947650419913257
+
+----------------------------------------
+Epoch 16 summary
+----------------------------------------
+mean_mlm_loss: 0.062356539007569135
+num_steps: 9630
+duration_sec: 494.11772226799803
+Evaluacion minima:
+- eval_mean_mlm_loss: 10.31739954496935
+
+----------------------------------------
+Epoch 17 summary
+----------------------------------------
+mean_mlm_loss: 0.058812069598837335
+num_steps: 9630
+duration_sec: 493.30830384599903
+Evaluacion minima:
+- eval_mean_mlm_loss: 10.179985603224795
+
+----------------------------------------
+Epoch 18 summary
+----------------------------------------
+mean_mlm_loss: 0.05821412730704813
+num_steps: 9630
+duration_sec: 492.73128282700054
+Evaluacion minima:
+- eval_mean_mlm_loss: 10.453361595884907
+
+----------------------------------------
+Epoch 19 summary
+----------------------------------------
+mean_mlm_loss: 0.054254174006164266
+num_steps: 9630
+duration_sec: 492.01355803000115
+Evaluacion minima:
+- eval_mean_mlm_loss: 10.418096360277099
+
+----------------------------------------
+Epoch 20 summary
+----------------------------------------
+mean_mlm_loss: 0.054413748813346034
+num_steps: 9630
+duration_sec: 491.8902917510022
+Evaluacion minima:
+- eval_mean_mlm_loss: 10.106460834856446
+
+----------------------------------------
+Training final summary
+----------------------------------------
+num_steps: 192600
+initial_mlm_loss: 1.4053301811218262
+final_mlm_loss: 0.00015135954890865833
+checkpoints_guardados:
+- Pasos/corridas_finales_full_20ep/pretraining_beto_mlm_limpio/checkpoint_final
+best_checkpoint: Pasos/corridas_finales_full_20ep/pretraining_beto_mlm_limpio/best_checkpoint
+final_checkpoint: Pasos/corridas_finales_full_20ep/pretraining_beto_mlm_limpio/checkpoint_final
+loss_curves_csv: Pasos/corridas_finales_full_20ep/pretraining_beto_mlm_limpio/loss_curves.csv
+status:
+- training OK
+- checkpointing OK
+
+Nota:
+- Esta corrida usa los mismos textos alineados del pipeline measured, pero no instancia ni usa la rama scanpath.
+- La loss es solo MLM estandar del modelo BETO base.
