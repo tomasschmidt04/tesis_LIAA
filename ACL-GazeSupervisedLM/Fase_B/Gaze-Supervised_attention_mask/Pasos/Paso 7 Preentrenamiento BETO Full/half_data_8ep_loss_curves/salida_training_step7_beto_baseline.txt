@@ -1,0 +1,145 @@
+PASO 7 BASELINE - Preentrenamiento BETO sin rama scanpath
+
+----------------------------------------
+Configuracion
+----------------------------------------
+dataset: /home/tomi/tesis_LIAA/reading-et/aligned_output/aligned_scanpaths.jsonl
+model_name_or_path: dccuchile/bert-base-spanish-wwm-cased
+tokenizer: BertTokenizerFast
+vocab_size: 31002
+model_type: bert
+hidden_size: 768
+num_hidden_layers: 12
+max_train_samples: 31500
+max_eval_samples: 1000
+epochs: 8
+batch_size: 4
+lr: 5e-05
+max_seq_length: 128
+seed: 13
+device: cuda
+
+----------------------------------------
+Batch debug 0 (epoch 1)
+----------------------------------------
+input_ids.shape: (4, 34)
+labels.shape: (4, 34)
+logits.shape: (4, 34, 31002)
+mlm_loss: 2.5948381423950195
+
+----------------------------------------
+Batch debug 1 (epoch 1)
+----------------------------------------
+input_ids.shape: (4, 34)
+labels.shape: (4, 34)
+logits.shape: (4, 34, 31002)
+mlm_loss: 0.9272165894508362
+
+----------------------------------------
+Epoch 1 summary
+----------------------------------------
+mean_mlm_loss: 1.520897807838591
+num_steps: 7875
+duration_sec: 391.3680155859329
+checkpoint_saved_to: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_1
+best_checkpoint_updated: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/best_checkpoint
+Evaluacion minima:
+- eval_mean_mlm_loss: 1.4505866250749677
+
+----------------------------------------
+Epoch 2 summary
+----------------------------------------
+mean_mlm_loss: 1.0463918194048132
+num_steps: 7875
+duration_sec: 392.3255828450201
+checkpoint_saved_to: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_2
+best_checkpoint_updated: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/best_checkpoint
+Evaluacion minima:
+- eval_mean_mlm_loss: 1.363253252257593
+
+----------------------------------------
+Epoch 3 summary
+----------------------------------------
+mean_mlm_loss: 0.9322084543113689
+num_steps: 7875
+duration_sec: 392.20358432189096
+checkpoint_saved_to: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_3
+Evaluacion minima:
+- eval_mean_mlm_loss: 1.513597796542803
+
+----------------------------------------
+Epoch 4 summary
+----------------------------------------
+mean_mlm_loss: 0.8754510285616003
+num_steps: 7875
+duration_sec: 392.47896239499096
+checkpoint_saved_to: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_4
+Evaluacion minima:
+- eval_mean_mlm_loss: 1.4689522190315183
+
+----------------------------------------
+Epoch 5 summary
+----------------------------------------
+mean_mlm_loss: 0.8395257911470156
+num_steps: 7875
+duration_sec: 392.4466099619167
+checkpoint_saved_to: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_5
+Evaluacion minima:
+- eval_mean_mlm_loss: 1.5620136278269348
+
+----------------------------------------
+Epoch 6 summary
+----------------------------------------
+mean_mlm_loss: 0.8190582587125934
+num_steps: 7875
+duration_sec: 392.46587677299976
+checkpoint_saved_to: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_6
+Evaluacion minima:
+- eval_mean_mlm_loss: 1.3869770277860807
+
+----------------------------------------
+Epoch 7 summary
+----------------------------------------
+mean_mlm_loss: 0.8006585640916617
+num_steps: 7875
+duration_sec: 392.5423173359595
+checkpoint_saved_to: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_7
+Evaluacion minima:
+- eval_mean_mlm_loss: 1.4139734930528212
+
+----------------------------------------
+Epoch 8 summary
+----------------------------------------
+mean_mlm_loss: 0.792054436541016
+num_steps: 7875
+duration_sec: 392.3885085269576
+checkpoint_saved_to: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_8
+Evaluacion minima:
+- eval_mean_mlm_loss: 1.4981248013231088
+
+----------------------------------------
+Training final summary
+----------------------------------------
+num_steps: 63000
+initial_mlm_loss: 2.5948381423950195
+final_mlm_loss: 0.024459408596158028
+checkpoints_guardados:
+- Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_1
+- Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_2
+- Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_3
+- Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_4
+- Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_5
+- Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_6
+- Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_7
+- Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_epoch_8
+- Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_final
+best_checkpoint: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/best_checkpoint
+final_checkpoint: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/checkpoint_final
+loss_curves_csv: Pasos/Paso 7 Preentrenamiento BETO Full/half_data_8ep_loss_curves/loss_curves.csv
+status:
+- training OK
+- checkpointing OK
+
+Nota:
+- Esta corrida usa los mismos textos alineados del pipeline measured, pero no instancia ni usa la rama scanpath.
+- La loss es solo MLM estandar del modelo BETO base.

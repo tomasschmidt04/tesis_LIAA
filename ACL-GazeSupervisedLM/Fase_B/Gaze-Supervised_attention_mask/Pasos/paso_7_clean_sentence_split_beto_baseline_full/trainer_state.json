@@ -1,0 +1,15 @@
+{
+  "total_steps": 0,
+  "train_size": null,
+  "eval_size": null,
+  "epoch_summaries": [],
+  "checkpoint_paths": [],
+  "best_checkpoint_path": null,
+  "final_checkpoint_path": null,
+  "loss_curves_path": null,
+  "split_report_path": "Pasos/paso_7_clean_sentence_split_beto_baseline_full/split_report.json",
+  "dry_run_split_only": true,
+  "failed": true,
+  "error_type": "ValueError",
+  "error_message": "Clean sentence-position split still has exact text overlap between train and eval: 180 overlapping texts. See split_report.json for examples."
+}

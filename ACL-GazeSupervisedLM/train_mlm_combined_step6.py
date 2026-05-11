@@ -9,7 +9,7 @@ from transformers import AutoTokenizer
 from Gazesup_bert_combined_mlm_model import Gazesup_BERTForCombinedMaskedLM
 from measured_scanpath_utils import load_measured_scanpath_dataset
 from train_mlm_scanpath_step5 import (
-    build_static_masked_inputs_and_labels,
+    DEFAULT_MLM_PROBABILITY,
     collate_measured_mlm_batch,
     move_tensor_batch_to_device,
     set_seed,
@@ -37,7 +37,8 @@ def parse_args():
     parser.add_argument("--per_device_train_batch_size", type=int, default=2, help="Mini-batch size used by the smoke training loop.")
     parser.add_argument("--num_train_epochs", type=int, default=1, help="Number of epochs for the smoke training loop.")
     parser.add_argument("--learning_rate", type=float, default=5e-5, help="Learning rate used by AdamW in the smoke training loop.")
-    parser.add_argument("--max_masked_positions", type=int, default=3, help="Maximum number of non-special tokens masked per example.")
+    parser.add_argument("--max_masked_positions", type=int, default=3, help="Deprecated; kept for command compatibility. Dynamic MLM now uses --mlm_probability.")
+    parser.add_argument("--mlm_probability", type=float, default=DEFAULT_MLM_PROBABILITY, help="Probability of masking each non-special token for dynamic MLM.")
     parser.add_argument("--aux_weight", type=float, default=1.0, help="Weight lambda used in total_loss = main_mlm_loss + aux_weight * scanpath_mlm_loss.")
     parser.add_argument("--remove_punctuation_space", action="store_true", help="Mirror the optional punctuation-space normalization used by the training scripts.")
     parser.add_argument("--seed", type=int, default=13, help="Random seed used for the smoke training loop.")
@@ -56,24 +57,16 @@ def preprocess_examples(dataset, tokenizer, args):
             max_seq_length=args.max_seq_length,
             remove_punctuation_space=args.remove_punctuation_space,
         )
-        masked_input_ids, labels, masked_positions = build_static_masked_inputs_and_labels(
-            input_ids=feature["input_ids"],
-            attention_mask=feature["attention_mask"],
-            tokenizer=tokenizer,
-            max_masked_positions=args.max_masked_positions,
-        )
         processed_examples.append(
             {
                 "example_index": example_index,
                 "text": text,
-                "input_ids": masked_input_ids,
+                "input_ids": feature["input_ids"],
                 "attention_mask": feature["attention_mask"],
                 "token_type_ids": feature["token_type_ids"],
                 "LM_word_ids": feature["word_ids"],
                 "measured_word_ids": feature["measured_word_ids"][0],
                 "measured_sp_len": feature["measured_sp_len"][0],
-                "labels": labels,
-                "masked_positions": masked_positions,
             }
         )
     return processed_examples
@@ -125,7 +118,7 @@ def train_smoke_loop(args):
         processed_examples,
         batch_size=args.per_device_train_batch_size,
         shuffle=False,
-        collate_fn=lambda batch: collate_measured_mlm_batch(batch, tokenizer),
+        collate_fn=lambda batch: collate_measured_mlm_batch(batch, tokenizer, mlm_probability=args.mlm_probability),
     )
 
     model = Gazesup_BERTForCombinedMaskedLM.from_pretrained(args.model_name_or_path)
@@ -206,7 +199,7 @@ def train_smoke_loop(args):
 
     checkpoint_dir = Path(args.output_dir) / args.checkpoint_dirname
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
-    model.save_pretrained(checkpoint_dir)
+    model.save_pretrained(checkpoint_dir, safe_serialization=False)
     tokenizer.save_pretrained(checkpoint_dir)
 
     return {

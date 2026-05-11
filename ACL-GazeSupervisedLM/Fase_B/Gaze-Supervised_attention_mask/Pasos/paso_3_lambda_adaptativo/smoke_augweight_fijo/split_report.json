@@ -1,0 +1,77 @@
+{
+  "split_strategy": "sentence_position",
+  "story_id_field": "story_id",
+  "sentence_position_field": "period_block_start",
+  "text_field": "text",
+  "sentence_position_index_base": "0-based",
+  "eval_sentence_position_mod": 10,
+  "eval_sentence_position_remainder": 5,
+  "seed": 13,
+  "max_train_samples": 4,
+  "max_eval_samples": 2,
+  "train_truncated_after_clean_split": true,
+  "eval_truncated_after_clean_split": true,
+  "total_rows": 65671,
+  "pre_truncation_train_rows": 59251,
+  "pre_truncation_eval_rows": 6420,
+  "train_rows": 4,
+  "eval_rows": 2,
+  "number_of_stories_train": 4,
+  "number_of_stories_eval": 2,
+  "number_of_unique_text_train": 4,
+  "number_of_unique_text_eval": 2,
+  "exact_text_overlap_count": 0,
+  "story_sentence_overlap_count": 0,
+  "exact_text_overlap_examples": [],
+  "story_sentence_overlap_examples": [],
+  "eval_sentence_positions_used": [
+    5,
+    35
+  ],
+  "train_sentence_positions_used": [
+    0,
+    27,
+    33,
+    36
+  ],
+  "train_examples": [
+    {
+      "row_index": 18882,
+      "story_id": "El espejo",
+      "sentence_position": 36,
+      "text": "después"
+    },
+    {
+      "row_index": 23645,
+      "story_id": "Embarrar la magia",
+      "sentence_position": 33,
+      "text": "llamada"
+    },
+    {
+      "row_index": 51673,
+      "story_id": "Las fotografías",
+      "sentence_position": 27,
+      "text": "alegría."
+    },
+    {
+      "row_index": 55510,
+      "story_id": "Rubí y el lago danzante",
+      "sentence_position": 0,
+      "text": "un futuro próximo, el gobierno llegó a la conclusión de que los animales debían vivir aislados, en una zona con vallas, donde pudieran interactuar de forma salvaje."
+    }
+  ],
+  "eval_examples": [
+    {
+      "row_index": 22486,
+      "story_id": "El golpe de gracia",
+      "sentence_position": 35,
+      "text": "tercero era el hermano mayor de Halcrow, Creede, que a medida que avanzaba veía cómo el capitán había matado, sin necesidad, a su hermano menor."
+    },
+    {
+      "row_index": 24724,
+      "story_id": "Embarrar la magia",
+      "sentence_position": 5,
+      "text": "Divino."
+    }
+  ]
+}

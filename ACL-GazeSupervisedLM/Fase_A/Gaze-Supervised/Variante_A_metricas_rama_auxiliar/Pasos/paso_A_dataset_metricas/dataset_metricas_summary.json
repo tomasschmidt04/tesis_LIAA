@@ -1,0 +1,39 @@
+{
+  "measured_scanpath_file": "../reading-et/results_all_alligned_2/La noche de los feos/sub-007.json",
+  "requested_features": [
+    "FFD",
+    "TRT",
+    "nFix"
+  ],
+  "feature_names_seen": [
+    "FC",
+    "FFD",
+    "FPRT",
+    "LS",
+    "RC",
+    "RPD",
+    "RR",
+    "RRT",
+    "SFD",
+    "SPRT",
+    "TFD"
+  ],
+  "mapping": {
+    "FFD": {
+      "source_name": "FFD",
+      "source_index": 0
+    },
+    "TRT": {
+      "source_name": "TFD",
+      "source_index": 4
+    },
+    "nFix": {
+      "source_name": "FC",
+      "source_index": 7
+    }
+  },
+  "normalization_path": "Variante_A_metricas_rama_auxiliar/Pasos/paso_A_dataset_metricas/gaze_feature_norm.json",
+  "nan_inf_replaced": 0,
+  "mismatches_discarded": 0,
+  "sample_examples_written": 5
+}

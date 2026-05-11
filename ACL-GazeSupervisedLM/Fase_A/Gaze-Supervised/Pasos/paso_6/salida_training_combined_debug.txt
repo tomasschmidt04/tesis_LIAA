@@ -1,0 +1,70 @@
+PASO 6 - Smoke training combinado de losses principal + auxiliar
+
+----------------------------------------
+Configuracion
+----------------------------------------
+dataset: ../reading-et/results_all_alligned/Ahora debería reírme, si no estuviera muerto/sub-001.json
+split: train
+max_train_samples: 8
+epochs: 1
+batch_size: 2
+lr: 5e-05
+aux_weight: 0.3
+max_seq_length: 128
+max_masked_positions: 3
+device: cuda
+
+----------------------------------------
+Batch debug 0
+----------------------------------------
+epoch: 0
+example_indices: [0, 1]
+masked_positions: [[1, 7, 13], [1, 8, 15]]
+input_ids.shape: (2, 23)
+labels.shape: (2, 23)
+main_mlm_logits.shape: (2, 23, 28996)
+scanpath_mlm_logits.shape: (2, 20, 28996)
+scanpath_labels_expanded.shape: (2, 20)
+main_mlm_loss: 3.641071319580078
+scanpath_mlm_loss: 10.331892967224121
+total_loss: 6.740639686584473
+
+----------------------------------------
+Batch debug 1
+----------------------------------------
+epoch: 0
+example_indices: [2, 3]
+masked_positions: [[1, 6, 11], [1, 7, 13]]
+input_ids.shape: (2, 22)
+labels.shape: (2, 22)
+main_mlm_logits.shape: (2, 22, 28996)
+scanpath_mlm_logits.shape: (2, 16, 28996)
+scanpath_labels_expanded.shape: (2, 16)
+main_mlm_loss: 2.4638826847076416
+scanpath_mlm_loss: 10.317808151245117
+total_loss: 5.559225082397461
+
+----------------------------------------
+Training summary
+----------------------------------------
+num_steps: 4
+initial_main_loss: 3.641071319580078
+final_main_loss: 3.484304189682007
+initial_scanpath_loss: 10.331892967224121
+final_scanpath_loss: 10.263193130493164
+initial_total_loss: 6.740639686584473
+final_total_loss: 6.563261985778809
+checkpoint_saved_to: Pasos/paso_6/checkpoint_smoke
+status:
+- forward OK
+- backward OK
+- optimizer step OK
+- total_loss sin NaN OK
+- checkpoint save OK
+
+Interpretacion breve:
+- media main_mlm_loss: 2.719190388917923
+- media scanpath_mlm_loss: 10.305736064910889
+- ratio scanpath/main: 3.790001651562163
+- ratio ponderado (aux_weight * scanpath)/main: 1.137000495468649
+- observacion: las dos losses tienen magnitudes razonablemente comparables con el aux_weight actual.

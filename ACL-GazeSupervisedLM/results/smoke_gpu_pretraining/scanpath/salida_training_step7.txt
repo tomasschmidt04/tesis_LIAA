@@ -1,0 +1,83 @@
+PASO 7 - Entrenamiento mas grande del modelo con losses combinadas + Beto
+
+----------------------------------------
+Configuracion
+----------------------------------------
+dataset: /home/tomi/tesis_LIAA/reading-et/aligned_output/aligned_scanpaths.jsonl
+model_name_or_path: hf-internal-testing/tiny-random-bert
+tokenizer: BertTokenizerFast
+vocab_size: 1124
+model_type: bert
+hidden_size: 32
+num_hidden_layers: 5
+max_train_samples: 2
+max_eval_samples: 1
+epochs: 1
+batch_size: 1
+lr: 5e-05
+aux_weight: 0.1
+max_seq_length: 32
+seed: 13
+device: cuda
+
+----------------------------------------
+Batch debug 0 (epoch 1)
+----------------------------------------
+input_ids.shape: (1, 32)
+labels.shape: (1, 32)
+main_mlm_logits.shape: (1, 32, 1124)
+scanpath_mlm_logits.shape: (1, 40, 1124)
+main_mlm_loss: 6.977023601531982
+scanpath_mlm_loss: 7.015262126922607
+total_loss: 7.678549766540527
+
+----------------------------------------
+Batch debug 1 (epoch 1)
+----------------------------------------
+input_ids.shape: (1, 32)
+labels.shape: (1, 32)
+main_mlm_logits.shape: (1, 32, 1124)
+scanpath_mlm_logits.shape: (1, 50, 1124)
+main_mlm_loss: 7.003814697265625
+scanpath_mlm_loss: 7.024654388427734
+total_loss: 7.70628023147583
+
+----------------------------------------
+Epoch 1 summary
+----------------------------------------
+mean_main_mlm_loss: 6.990419149398804
+mean_scanpath_mlm_loss: 7.019958257675171
+mean_total_loss: 7.692414999008179
+num_steps: 2
+duration_sec: 0.3608138699783012
+best_checkpoint_updated: results/smoke_gpu_pretraining/scanpath/best_checkpoint
+Evaluacion minima:
+- eval_mean_main_mlm_loss: 7.0522027015686035
+- eval_mean_scanpath_mlm_loss: 7.021153450012207
+- eval_mean_total_loss: 7.7543182373046875
+
+----------------------------------------
+Training final summary
+----------------------------------------
+num_steps: 2
+initial_main_loss: 6.977023601531982
+final_main_loss: 7.003814697265625
+initial_scanpath_loss: 7.015262126922607
+final_scanpath_loss: 7.024654388427734
+initial_total_loss: 7.678549766540527
+final_total_loss: 7.70628023147583
+checkpoints_guardados:
+- results/smoke_gpu_pretraining/scanpath/checkpoint_final
+best_checkpoint: results/smoke_gpu_pretraining/scanpath/best_checkpoint
+final_checkpoint: results/smoke_gpu_pretraining/scanpath/checkpoint_final
+loss_curves_csv: results/smoke_gpu_pretraining/scanpath/loss_curves.csv
+status:
+- training OK
+- checkpointing OK
+
+Interpretacion breve:
+- ratio scanpath/main: 1.0042256562367806
+- ratio ponderado (aux_weight * scanpath)/main: 0.10042256562367807
+- sugerencia: la rama auxiliar pesa poco; si queres mas influencia scanpath, podria convenir subir aux_weight.
+- si las losses bajan o se mantienen estables entre epochs, el entrenamiento parece sano para esta escala intermedia.
+- la evaluacion minima ayuda a no depender solo de la loss de entrenamiento, aunque todavia no es un validation setup sofisticado.

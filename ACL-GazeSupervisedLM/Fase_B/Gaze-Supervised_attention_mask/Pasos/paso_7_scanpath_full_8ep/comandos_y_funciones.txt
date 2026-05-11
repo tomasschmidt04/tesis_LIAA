@@ -1,0 +1,25 @@
+COMANDOS Y FUNCIONES - PASO 7
+=============================
+
+Comando ejecutado
+- .\.venv\Scripts\python.exe train_mlm_combined_step7.py --measured_scanpath_file "/home/tomi/tesis_LIAA/reading-et/aligned_output/aligned_scanpaths.jsonl" --model_name_or_path dccuchile/bert-base-spanish-wwm-cased --measured_text_field text --measured_word_id_field word_id --split train --output_dir Pasos/paso_7_scanpath_full_8ep --max_seq_length 128 --max_train_samples 63671 --max_eval_samples 2000 --per_device_train_batch_size 4 --per_device_eval_batch_size 4 --num_train_epochs 8 --learning_rate 5e-05 --max_masked_positions 3 --aux_weight 0.1 --save_every_epoch True --seed 13
+
+Script principal usado
+- train_mlm_combined_step7.py
+
+Funciones principales llamadas
+- measured_scanpath_utils.load_measured_scanpath_dataset
+- measured_scanpath_utils.build_measured_single_sentence_features
+- build_static_masked_inputs_and_labels
+- collate_measured_mlm_batch
+- Gazesup_BERTForCombinedMaskedLM.from_pretrained
+- Gazesup_BERTForCombinedMaskedLM.forward
+- evaluate_model
+- save_checkpoint
+- torch.optim.AdamW
+
+Output generado
+- Pasos/paso_7/salida_training_step7.txt con resumen por epoch, losses y checkpoints.
+- Pasos/paso_7/README_paso_7.txt con el alcance de esta corrida mas grande.
+- Pasos/paso_7/comandos_y_funciones.txt con trazabilidad de la corrida.
+- Pasos/paso_7/checkpoint_epoch_*/, Pasos/paso_7/best_checkpoint/ y Pasos/paso_7/checkpoint_final/ con checkpoints reutilizables.

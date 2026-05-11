@@ -37,7 +37,10 @@ class Gazesup_BERTForCombinedMaskedLM(BertPreTrainedModel):
     over the scanpath-level sequence -> scanpath_mlm_loss
 
     Total loss:
-    total_loss = main_mlm_loss + aux_weight * scanpath_mlm_loss
+    total_loss = main_mlm_loss + effective_scanpath_weight * scanpath_mlm_loss
+
+    If current_scanpath_weight is not provided, effective_scanpath_weight falls back
+    to aux_weight for backwards-compatible fixed weighting.
     """
 
     _keys_to_ignore_on_load_missing = [r"position_ids"]
@@ -129,6 +132,7 @@ class Gazesup_BERTForCombinedMaskedLM(BertPreTrainedModel):
         measured_sp_len=None,
         labels=None,
         aux_weight=1.0,
+        current_scanpath_weight=None,
         return_dict=True,
     ):
         if LM_word_ids is None:
@@ -177,11 +181,19 @@ class Gazesup_BERTForCombinedMaskedLM(BertPreTrainedModel):
                 gaze_token_pos=gaze_token_pos,
                 sp_len=sp_len,
             )
-            scanpath_mlm_loss = loss_fct(
-                scanpath_mlm_logits.reshape(-1, self.config.vocab_size),
-                scanpath_labels_expanded.reshape(-1),
+            if (scanpath_labels_expanded != -100).any():
+                scanpath_mlm_loss = loss_fct(
+                    scanpath_mlm_logits.reshape(-1, self.config.vocab_size),
+                    scanpath_labels_expanded.reshape(-1),
+                )
+            else:
+                scanpath_mlm_loss = scanpath_mlm_logits.new_zeros(())
+            effective_scanpath_weight = (
+                float(aux_weight)
+                if current_scanpath_weight is None
+                else float(current_scanpath_weight)
             )
-            total_loss = main_mlm_loss + float(aux_weight) * scanpath_mlm_loss
+            total_loss = main_mlm_loss + effective_scanpath_weight * scanpath_mlm_loss
 
         if not return_dict:
             return (

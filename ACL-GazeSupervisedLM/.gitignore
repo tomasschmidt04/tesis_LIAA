@@ -1,0 +1,24 @@
+# Model weights
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Binary feature files
+*.pickle
+
+# IDE
+.idea/
+.vscode/
+*.swp

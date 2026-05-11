@@ -1,0 +1,41 @@
+COMANDOS Y FUNCIONES - PASO 7
+=============================
+
+Comando ejecutado
+- python train_mlm_combined_step7.py --model_name_or_path dccuchile/bert-base-spanish-wwm-cased --measured_text_field text --measured_word_id_field word_id --split train --output_dir Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun --max_seq_length 128 --max_train_samples -1 --max_eval_samples -1 --per_device_train_batch_size 4 --per_device_eval_batch_size 4 --num_train_epochs 8 --learning_rate 5e-05 --max_masked_positions 3 --aux_weight 0.1 --adaptive_scanpath_weight False --scanpath_weight_min 0.05 --scanpath_weight_max 0.5 --scanpath_weight_warmup_epochs 1 --scanpath_weight_update_metric auto --save_every_epoch True --seed 13 --split_strategy precomputed_files --eval_sentence_position_mod 10 --eval_sentence_position_remainder 5 --dry_run_split_only True --train_file "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl" --eval_file "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl" --split_report_path "Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/split_report.json"
+
+Comando para correr con lambda adaptativo
+- python train_mlm_combined_step7.py --model_name_or_path dccuchile/bert-base-spanish-wwm-cased --measured_text_field text --measured_word_id_field word_id --split train --output_dir Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun --max_seq_length 128 --max_train_samples -1 --max_eval_samples -1 --per_device_train_batch_size 4 --per_device_eval_batch_size 4 --num_train_epochs 8 --learning_rate 5e-05 --max_masked_positions 3 --aux_weight 0.1 --adaptive_scanpath_weight True --scanpath_weight_min 0.05 --scanpath_weight_max 0.5 --scanpath_weight_warmup_epochs 1 --scanpath_weight_update_metric auto --save_every_epoch True --seed 13 --split_strategy precomputed_files --eval_sentence_position_mod 10 --eval_sentence_position_remainder 5 --dry_run_split_only True --train_file "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl" --eval_file "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl" --split_report_path "Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/split_report.json"
+
+Comando para correr con augweight fijo como antes
+- python train_mlm_combined_step7.py --model_name_or_path dccuchile/bert-base-spanish-wwm-cased --measured_text_field text --measured_word_id_field word_id --split train --output_dir Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun --max_seq_length 128 --max_train_samples -1 --max_eval_samples -1 --per_device_train_batch_size 4 --per_device_eval_batch_size 4 --num_train_epochs 8 --learning_rate 5e-05 --max_masked_positions 3 --aux_weight 0.1 --adaptive_scanpath_weight False --scanpath_weight_min 0.05 --scanpath_weight_max 0.5 --scanpath_weight_warmup_epochs 1 --scanpath_weight_update_metric auto --save_every_epoch True --seed 13 --split_strategy precomputed_files --eval_sentence_position_mod 10 --eval_sentence_position_remainder 5 --dry_run_split_only True --train_file "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl" --eval_file "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl" --split_report_path "Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/split_report.json"
+
+Script principal usado
+- train_mlm_combined_step7.py
+
+Funciones principales llamadas
+- measured_scanpath_utils.load_measured_scanpath_dataset
+- measured_scanpath_utils.build_mlm_train_eval_datasets
+- measured_scanpath_utils.build_precomputed_file_train_eval_datasets
+- measured_scanpath_utils.build_measured_single_sentence_features
+- build_static_masked_inputs_and_labels
+- collate_measured_mlm_batch
+- Gazesup_BERTForCombinedMaskedLM.from_pretrained
+- Gazesup_BERTForCombinedMaskedLM.forward
+- evaluate_model
+- compute_adaptive_scanpath_weight
+- select_scanpath_weight_update_metric
+- write_scanpath_weight_log
+- save_checkpoint
+- torch.optim.AdamW
+
+Output generado
+- Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/split_report.json con validaciones del split limpio.
+- Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/salida_training_step7.txt con resumen por epoch, losses y checkpoints.
+- Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/loss_curves.csv con medias train/eval por epoch.
+- Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/lambda_scanpath_log.csv con evolucion de lambda si adaptive_scanpath_weight=True.
+- Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/README_lambda_adaptativo.txt si adaptive_scanpath_weight=True.
+- Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/salida_debug_lambda_adaptativo.txt si adaptive_scanpath_weight=True.
+- Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/README_paso_7.txt con el alcance de esta corrida mas grande.
+- Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/comandos_y_funciones.txt con trazabilidad de la corrida.
+- Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/checkpoint_epoch_*/, Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/best_checkpoint/ y Pasos/paso_7_precomputed_story_split_launcher_scanpath_dryrun/checkpoint_final/ con checkpoints reutilizables.

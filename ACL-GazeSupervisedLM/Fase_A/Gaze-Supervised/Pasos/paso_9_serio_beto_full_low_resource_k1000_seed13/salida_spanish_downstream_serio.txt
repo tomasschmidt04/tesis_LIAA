@@ -1,0 +1,116 @@
+PASO 9 SERIO - Fine-tuning downstream/extrinseco en espanol
+
+----------------------------------------
+Checkpoint usado
+----------------------------------------
+main_pipeline_dir: /home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/Pasos/Paso 7 Preentrenamiento BETO Full
+checkpoint usado: /home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/Pasos/Paso 7 Preentrenamiento BETO Full/best_checkpoint
+criterio de seleccion: best_checkpoint_dir
+motivo: Existe el directorio best_checkpoint dentro del entrenamiento principal full 8ep.
+
+----------------------------------------
+Tokenizer y modelo base
+----------------------------------------
+tokenizer: BertTokenizerFast
+model_type: bert
+architectures_originales: ['BertForMaskedLM']
+downstream: AutoModelForSequenceClassification con cabeza nueva por tarea
+scanpath_downstream: no
+GRU_downstream: no
+loss_auxiliar_downstream: no
+
+----------------------------------------
+Task list
+----------------------------------------
+tasks: ['xnli_es', 'intertass2020']
+
+----------------------------------------
+Configuracion completa
+----------------------------------------
+num_train_epochs: 10
+max_train_samples: 1000
+max_eval_samples: 1000
+per_device_train_batch_size: 8
+per_device_eval_batch_size: 8
+max_seq_length: 128
+learning_rate: 2e-05
+seed: 13
+evaluation_strategy: epoch
+save_strategy: epoch
+load_best_model_at_end: True
+save_total_limit: 1
+
+----------------------------------------
+Tarea: xnli_es
+----------------------------------------
+tipo de tarea: sentence pair classification
+columnas usadas: ['premise', 'hypothesis']
+dataset_source: datasets.load_dataset("xnli", "es")
+dataset_note: Se usa train para entrenamiento y validation para evaluacion.
+eval_split_origin: validation oficial de xnli/es
+num_labels: 3
+labels: ['entailment', 'neutral', 'contradiction']
+metrica principal: accuracy
+input_ids.shape de ejemplo: [1, 21]
+logits.shape de ejemplo: [1, 3]
+best checkpoint downstream: Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/xnli_es/checkpoint-250
+output_dir: Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/xnli_es
+
+Train metrics:
+- train_runtime: 153.2129
+- train_samples_per_second: 65.269
+- train_steps_per_second: 8.159
+- total_flos: 372679600475952.0
+- train_loss: 0.37008008915483953
+- epoch: 10.0
+- train_samples: 1000
+
+Eval metrics:
+- eval_loss: 1.0740052461624146
+- eval_accuracy: 0.426
+- eval_runtime: 2.0695
+- eval_samples_per_second: 483.206
+- eval_steps_per_second: 60.401
+- eval_samples: 1000
+
+Checkpoints downstream guardados:
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/xnli_es/checkpoint-250
+- modelo final guardado en: Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/xnli_es
+
+----------------------------------------
+Tarea: intertass2020
+----------------------------------------
+tipo de tarea: single sentence classification
+columnas usadas: ['text']
+dataset_source: iberbench/iberbench_all raw parquet: iberlef-tass-sentiment_analysis-2020-spanish
+dataset_note: La fuente expone solo train; se construye validation con train_test_split estratificado por label usando seed fija.
+eval_split_origin: train_test_split(test_size=0.2, stratify_by_column='label', seed=13)
+num_labels: 3
+labels: ['0', '1', '2']
+metrica principal: macro_f1
+input_ids.shape de ejemplo: [1, 25]
+logits.shape de ejemplo: [1, 3]
+best checkpoint downstream: Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020/checkpoint-1125
+output_dir: Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020
+
+Train metrics:
+- train_runtime: 125.4562
+- train_samples_per_second: 79.709
+- train_steps_per_second: 9.964
+- total_flos: 202293106761312.0
+- train_loss: 0.2721797963172197
+- epoch: 10.0
+- train_samples: 1000
+
+Eval metrics:
+- eval_loss: 2.498281240463257
+- eval_macro_f1: 0.5977975252220624
+- eval_runtime: 1.4535
+- eval_samples_per_second: 660.497
+- eval_steps_per_second: 82.562
+- eval_samples: 960
+
+Checkpoints downstream guardados:
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020/checkpoint-1125
+- modelo final guardado en: Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020
+

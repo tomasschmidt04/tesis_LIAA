@@ -1,0 +1,25 @@
+CHECKLIST PRE-CORRIDA
+=====================
+
+OK - Dataset limpio por largo existe: /home/tomi/tesis_LIAA/reading-et/procesamiento_por_largo_input/data_filtrada
+OK - Regla de limpieza aplicada: conservar n_words >= 4; eliminados 0, 1, 2 y 3 palabras.
+OK - Train/Test MLM existe: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl y test.jsonl.
+OK - Split MLM por cuentos completos, no por filas individuales.
+OK - Leakage por cuento: story_overlap_count = 0.
+OK - Leakage por texto exacto: exact_text_overlap_count = 0.
+OK - Ejemplos MLM: Train 38.518 / Test 9.630.
+OK - Cuentos MLM: Train 15 / Test 5.
+OK - Campos preservados en JSONL: text, word_id, scanpath_text.
+OK - results_all_alligned_2_limpio_alineado existe y cubre 48.148/48.148 ejemplos.
+OK - Scripts principales compilan con py_compile.
+OK - Pretraining BETO solo usa AutoModelForMaskedLM y MLM estandar.
+OK - Pretraining BETO + scanpath usa Gazesup_BERTForCombinedMaskedLM, word_id medido y loss auxiliar.
+OK - Lambda adaptativo implementado con fallback a aux_weight fijo.
+WARNING - Los launchers existentes no siempre activan lambda adaptativo por default; los comandos finales lo activan explicitamente en experimento 2.
+OK - Downstream XNLI usa AutoModelForSequenceClassification y no usa scanpath.
+WARNING - Tarea "Sentiment rioplatense" no existe como tal en el pipeline actual.
+WARNING - Los comandos usan rioplatense_hate_binary como tarea rioplatense disponible; decidir si esto reemplaza o no a sentiment.
+WARNING - datasets downstream pueden depender de Hugging Face/GitHub si no estan cacheados localmente.
+PENDIENTE - Checkpoints finales en Pasos/corridas_finales/pretraining_* todavia no existen; dependen de correr experimentos 1 y 2.
+PENDIENTE - Si se requiere usar medidas numericas de fijacion en la rama scanpath, conectar results_all_alligned_2_limpio_alineado al script correspondiente.
+OK - comandos_8_corridas.sh generado con guardia RUN_EXPERIMENTS=1 para evitar ejecucion accidental.

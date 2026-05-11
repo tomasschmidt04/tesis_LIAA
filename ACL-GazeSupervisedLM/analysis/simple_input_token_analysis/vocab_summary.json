@@ -1,0 +1,16 @@
+{
+  "beto_vocab_size": 31002,
+  "beto_special_token_count": 5,
+  "beto_non_special_token_count": 30997,
+  "beto_word_start_token_count": 24923,
+  "beto_continuation_subword_token_count": 6074,
+  "observed_text_lm_token_total": 1063702,
+  "observed_text_lm_token_types": 4307,
+  "observed_text_lm_token_ratio_over_beto_vocab": 0.13892652086962132,
+  "observed_scanpath_lm_token_total": 1061844,
+  "observed_scanpath_lm_token_types": 4309,
+  "observed_scanpath_lm_token_ratio_over_beto_vocab": 0.1389910328365912,
+  "observed_any_lm_token_types": 4309,
+  "observed_any_lm_token_ratio_over_beto_vocab": 0.1389910328365912,
+  "note": "BETO uses WordPiece tokens. beto_vocab_size counts tokenizer tokens, not necessarily complete words."
+}

@@ -1,0 +1,23 @@
+COMANDOS Y FUNCIONES - PASO 6
+=============================
+
+Comando ejecutado
+- .\.venv\Scripts\python.exe train_mlm_combined_step6.py --measured_scanpath_file "../reading-et/results_all_alligned/Ahora debería reírme, si no estuviera muerto/sub-001.json" --model_name_or_path bert-base-cased --measured_text_field text --measured_word_id_field word_id --split train --output_dir Pasos/paso_6 --max_seq_length 128 --max_train_samples 8 --per_device_train_batch_size 2 --num_train_epochs 1 --learning_rate 5e-05 --max_masked_positions 3 --aux_weight 0.3 --seed 13
+
+Script principal usado
+- train_mlm_combined_step6.py
+
+Funciones principales llamadas
+- measured_scanpath_utils.load_measured_scanpath_dataset
+- measured_scanpath_utils.build_measured_single_sentence_features
+- build_static_masked_inputs_and_labels
+- collate_measured_mlm_batch
+- Gazesup_BERTForCombinedMaskedLM.from_pretrained
+- Gazesup_BERTForCombinedMaskedLM.forward
+- torch.optim.AdamW
+
+Output generado
+- Pasos/paso_6/salida_training_combined_debug.txt con losses principal, auxiliar y total.
+- Pasos/paso_6/README_paso_6.txt con el alcance de este smoke training combinado.
+- Pasos/paso_6/comandos_y_funciones.txt con trazabilidad de la corrida.
+- Pasos/paso_6/checkpoint_smoke/ con el checkpoint guardado.

@@ -1,0 +1,5 @@
+{
+  "examples_written": 5,
+  "warnings": 0,
+  "note": "Usa BETO si transformers esta instalado; si no, cae a tokenizacion aproximada. El modelo usa word_ids reales del tokenizer."
+}

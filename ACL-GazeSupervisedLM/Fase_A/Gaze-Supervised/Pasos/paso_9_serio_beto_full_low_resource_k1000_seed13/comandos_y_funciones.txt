@@ -1,0 +1,40 @@
+COMANDOS Y FUNCIONES - PASO 9 SERIO
+====================================
+
+Comando ejecutado
+- /home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/.venv/bin/python run_spanish_downstream_serio_step9.py --main_pipeline_dir 'Pasos/Paso 7 Preentrenamiento BETO Full' --output_dir Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13 --max_train_samples 1000 --max_eval_samples 1000 --num_train_epochs 10 --per_device_train_batch_size 8 --per_device_eval_batch_size 8 --max_seq_length 128 --learning_rate 2e-05 --seed 13 --evaluation_strategy epoch --save_strategy epoch --save_total_limit 1 --load_best_model_at_end
+
+Script principal
+- run_spanish_downstream_serio_step9.py
+
+Script downstream reutilizado
+- train_spanish_downstream_baseline.py
+
+Funciones principales llamadas
+- resolve_main_pipeline_checkpoint
+- parse_best_checkpoint_from_logs
+- resolve_metric_best_checkpoint
+- resolve_latest_checkpoint
+- build_task_command
+- run_task
+- train_spanish_downstream_baseline.load_task_dataset
+- train_spanish_downstream_baseline.tokenize_dataset
+- train_spanish_downstream_baseline.build_forward_debug
+- Trainer.train
+- Trainer.evaluate
+
+Checkpoint seleccionado
+- ruta: /home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/Pasos/Paso 7 Preentrenamiento BETO Full/best_checkpoint
+- criterio: best_checkpoint_dir
+- motivo: Existe el directorio best_checkpoint dentro del entrenamiento principal full 8ep.
+
+Archivos generados
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/README_paso_9_serio.txt
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/salida_spanish_downstream_serio.txt
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/comandos_y_funciones.txt
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/xnli_es
+- Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020
+
+Comandos internos por tarea
+- /home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/.venv/bin/python train_spanish_downstream_baseline.py --model_name_or_path '/home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/Pasos/Paso 7 Preentrenamiento BETO Full/best_checkpoint' --task_name xnli_es --output_dir Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/xnli_es --max_train_samples 1000 --max_eval_samples 1000 --num_train_epochs 10 --per_device_train_batch_size 8 --per_device_eval_batch_size 8 --max_seq_length 128 --learning_rate 2e-05 --seed 13 --evaluation_strategy epoch --save_strategy epoch --save_total_limit 1 --intertass_cache_dir Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/cache --load_best_model_at_end
+- /home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/.venv/bin/python train_spanish_downstream_baseline.py --model_name_or_path '/home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/Pasos/Paso 7 Preentrenamiento BETO Full/best_checkpoint' --task_name intertass2020 --output_dir Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020 --max_train_samples 1000 --max_eval_samples 1000 --num_train_epochs 10 --per_device_train_batch_size 8 --per_device_eval_batch_size 8 --max_seq_length 128 --learning_rate 2e-05 --seed 13 --evaluation_strategy epoch --save_strategy epoch --save_total_limit 1 --intertass_cache_dir Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/cache --load_best_model_at_end

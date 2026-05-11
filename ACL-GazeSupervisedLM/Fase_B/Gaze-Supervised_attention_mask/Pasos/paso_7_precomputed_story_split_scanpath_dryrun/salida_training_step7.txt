@@ -1,0 +1,20 @@
+PASO 7 - Dry run de split limpio
+=================================
+
+No se entreno el modelo porque dry_run_split_only=True.
+
+Configuracion
+- dataset: None
+- train_file: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl
+- eval_file: /home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl
+- split_strategy: precomputed_files
+- eval_sentence_position_mod: 10
+- eval_sentence_position_remainder: 5
+- max_train_samples: -1
+- max_eval_samples: -1
+- seed: 13
+
+Resultado
+- train_rows: 38518
+- eval_rows: 9630
+- split_report: Pasos/paso_7_precomputed_story_split_scanpath_dryrun/split_report.json

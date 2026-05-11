@@ -1,0 +1,37 @@
+{
+  "requested_features": [
+    "FFD",
+    "TRT",
+    "nFix"
+  ],
+  "mapping": {
+    "FFD": {
+      "source_name": "FFD",
+      "source_index": 0
+    },
+    "TRT": {
+      "source_name": "TFD",
+      "source_index": 4
+    },
+    "nFix": {
+      "source_name": "FC",
+      "source_index": 7
+    }
+  },
+  "all_mappings_seen": [
+    {
+      "FFD": {
+        "source_name": "FFD",
+        "source_index": 0
+      },
+      "TRT": {
+        "source_name": "TFD",
+        "source_index": 4
+      },
+      "nFix": {
+        "source_name": "FC",
+        "source_index": 7
+      }
+    }
+  ]
+}

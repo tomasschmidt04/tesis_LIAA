@@ -1,0 +1,8 @@
+x_sp_before_fusion.shape: (1, 20, 768)
+measured_gaze_features_token_level.shape: (1, 20, 3)
+gaze_proj.shape: (1, 20, 768)
+gate.mean: 0.1276235431432724
+gate.min: 0.008194534108042717
+gate.max: 0.5454750061035156
+x_sp_after_fusion.shape: (1, 20, 768)
+sp_len.shape: (1,)

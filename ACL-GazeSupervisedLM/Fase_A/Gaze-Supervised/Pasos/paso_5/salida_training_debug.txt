@@ -1,0 +1,64 @@
+PASO 5 - Smoke training de la rama auxiliar MLM con scanpaths medidos
+
+----------------------------------------
+Configuracion
+----------------------------------------
+dataset: ../reading-et/results_all_alligned/Ahora debería reírme, si no estuviera muerto/sub-001.json
+split: train
+max_train_samples: 8
+epochs: 1
+batch_size: 2
+lr: 5e-05
+max_seq_length: 128
+max_masked_positions: 3
+device: cuda
+
+----------------------------------------
+Batch debug 0
+----------------------------------------
+epoch: 0
+example_indices: [0, 1]
+masked_positions: [[1, 7, 13], [1, 8, 15]]
+input_ids.shape: (2, 23)
+labels.shape: (2, 23)
+scanpath_mlm_logits.shape: (2, 20, 28996)
+scanpath_labels_expanded.shape: (2, 20)
+loss: 10.284436225891113
+textos del batch:
+- texto 0: Ahora debería reírme si no estuviera muerto
+- texto 1: La profesora corrige los ejercicios con mucha paciencia
+
+----------------------------------------
+Batch debug 1
+----------------------------------------
+epoch: 0
+example_indices: [2, 3]
+masked_positions: [[1, 6, 11], [1, 7, 13]]
+input_ids.shape: (2, 22)
+labels.shape: (2, 22)
+scanpath_mlm_logits.shape: (2, 16, 28996)
+scanpath_labels_expanded.shape: (2, 16)
+loss: 10.303053855895996
+textos del batch:
+- texto 0: El laboratorio analiza señales oculares en español
+- texto 1: Nuestra red aprende patrones de lectura muy rápido
+
+----------------------------------------
+Training summary
+----------------------------------------
+num_steps: 4
+initial_loss: 10.284436225891113
+final_loss: 10.301841735839844
+checkpoint_saved_to: Pasos/paso_5/checkpoint_smoke
+status:
+- forward OK
+- backward OK
+- optimizer step OK
+- checkpoint save OK
+
+Notas:
+- La loss usada en este smoke training es CrossEntropyLoss(ignore_index=-100) sobre logits MLM de vocabulario.
+- La rama auxiliar ya no se reagrega a longitud original T; la prediccion se hace directo sobre la secuencia scanpath-level S.
+- scanpath_labels_expanded replica el target original cada vez que el mismo token reaparece en gaze_token_pos.
+- Si un token masked aparece varias veces en el scanpath, aporta varias veces a la loss auxiliar.
+- Esta corrida valida funcionamiento de punta a punta, pero no representa un experimento final ni una configuracion optimizada.

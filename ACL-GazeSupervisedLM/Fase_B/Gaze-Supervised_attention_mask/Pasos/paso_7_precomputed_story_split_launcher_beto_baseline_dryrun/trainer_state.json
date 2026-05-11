@@ -1,0 +1,12 @@
+{
+  "total_steps": 0,
+  "train_size": 38518,
+  "eval_size": 9630,
+  "epoch_summaries": [],
+  "checkpoint_paths": [],
+  "best_checkpoint_path": null,
+  "final_checkpoint_path": null,
+  "loss_curves_path": null,
+  "split_report_path": "Pasos/paso_7_precomputed_story_split_launcher_beto_baseline_dryrun/split_report.json",
+  "dry_run_split_only": true
+}

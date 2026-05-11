@@ -1,0 +1,102 @@
+{
+  "split_strategy": "precomputed_files",
+  "train_file": "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/train.jsonl",
+  "eval_file": "/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/test.jsonl",
+  "story_id_field": "cuento",
+  "text_field": "text",
+  "seed": 13,
+  "max_train_samples": 4,
+  "max_eval_samples": 2,
+  "train_truncated_after_clean_split": true,
+  "eval_truncated_after_clean_split": true,
+  "total_rows": 6,
+  "pre_truncation_train_rows": 38518,
+  "pre_truncation_eval_rows": 9630,
+  "train_rows": 4,
+  "eval_rows": 2,
+  "train_percentage_rows": 66.6667,
+  "eval_percentage_rows": 33.3333,
+  "number_of_stories_train": 4,
+  "number_of_stories_eval": 2,
+  "train_stories": [
+    "El almohadón de plumas",
+    "La canción que cantábamos todos los días",
+    "La gallina degollada",
+    "Rubí y el lago danzante"
+  ],
+  "eval_stories": [
+    "La máscara de la Muerte Roja",
+    "La salud de los enfermos"
+  ],
+  "story_overlap_count": 0,
+  "story_overlap_examples": [],
+  "number_of_unique_text_train": 4,
+  "number_of_unique_text_eval": 2,
+  "exact_text_overlap_count": 0,
+  "exact_text_overlap_examples": [],
+  "split_label_mismatch_count": 0,
+  "split_label_mismatch_examples": [],
+  "missing_text_count": 0,
+  "missing_text_examples": {
+    "train": [],
+    "eval": []
+  },
+  "train_examples": [
+    {
+      "row_index": 7088,
+      "story_id": "El almohadón de plumas",
+      "split": "train",
+      "source_file": "sub-048.json",
+      "trial_id": "El almohadón de plumas::sub-048::seg_0059",
+      "n_words": 7,
+      "text": "llevaron al comedor y lo pusieron sobre"
+    },
+    {
+      "row_index": 16029,
+      "story_id": "La canción que cantábamos todos los días",
+      "split": "train",
+      "source_file": "sub-073.json",
+      "trial_id": "La canción que cantábamos todos los días::sub-073::seg_0022",
+      "n_words": 5,
+      "text": "El padre también estaba distante."
+    },
+    {
+      "row_index": 19736,
+      "story_id": "La gallina degollada",
+      "split": "train",
+      "source_file": "sub-006.json",
+      "trial_id": "La gallina degollada::sub-006::seg_0043",
+      "n_words": 33,
+      "text": "estaba acostumbrada a hacer siempre lo que quería, buscó un cajón, lo apoyó contra el tapial, trepó en puntas de pie y consiguió apoyar la garganta sobre el borde, con los brazos tirantes."
+    },
+    {
+      "row_index": 31131,
+      "story_id": "Rubí y el lago danzante",
+      "split": "train",
+      "source_file": "sub-052.json",
+      "trial_id": "Rubí y el lago danzante::sub-052::seg_0044",
+      "n_words": 12,
+      "text": "Una vez adentro, se encontraron con todo eso que nosotros todavía recordamos,"
+    }
+  ],
+  "eval_examples": [
+    {
+      "row_index": 6221,
+      "story_id": "La máscara de la Muerte Roja",
+      "split": "test",
+      "source_file": "sub-052.json",
+      "trial_id": "La máscara de la Muerte Roja::sub-052::seg_0031",
+      "n_words": 25,
+      "text": "obvio: la mortaja estaba salpicada de sangre, y la propia máscara estaba manchada de escarlata: el tono que tenían los infectados minutos antes de morir."
+    },
+    {
+      "row_index": 8119,
+      "story_id": "La salud de los enfermos",
+      "split": "test",
+      "source_file": "sub-041.json",
+      "trial_id": "La salud de los enfermos::sub-041::seg_0027",
+      "n_words": 18,
+      "text": "vieja asintió, más desganada que nunca, y tomó sus remedios, esa mañana y todas las mañanas que siguieron."
+    }
+  ]
+}

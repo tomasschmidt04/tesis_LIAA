@@ -1,0 +1,38 @@
+{
+  "task_name": "rioplatense_hate_binary",
+  "model_name_or_path": "hf-internal-testing/tiny-random-bert",
+  "output_dir": "results/smoke_gpu_rioplatense/scanpath_full_8ep/k4/seed_111",
+  "num_labels": 2,
+  "label2id": {
+    "no_hate": 0,
+    "hate": 1
+  },
+  "id2label": {
+    "0": "no_hate",
+    "1": "hate"
+  },
+  "dataset_path": null,
+  "use_context": false,
+  "train_as_val": true,
+  "max_train_samples": 4,
+  "low_resource_data_seed": 111,
+  "split_sizes": {
+    "train": 4,
+    "validation": 1000,
+    "test": 1134
+  },
+  "class_distribution": {
+    "train": {
+      "no_hate": 4,
+      "hate": 0
+    },
+    "validation": {
+      "no_hate": 848,
+      "hate": 152
+    },
+    "test": {
+      "no_hate": 959,
+      "hate": 175
+    }
+  }
+}

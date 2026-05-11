@@ -1,0 +1,57 @@
+COMANDOS Y FUNCIONES - AUDITORIA PRE-CORRIDAS FINALES
+=====================================================
+
+No se ejecutaron entrenamientos. Solo se leyeron archivos, se validaron conteos/reportes y se genero documentacion.
+
+Comandos livianos ejecutados durante la auditoria
+-------------------------------------------------
+- `sed` y `rg` sobre scripts principales.
+- `.venv/bin/python -m py_compile measured_scanpath_utils.py train_mlm_beto_baseline_step7_pretrain.py train_mlm_combined_step7.py Gazesup_bert_combined_mlm_model.py Gazesup_bert_model.py train_spanish_downstream_baseline.py train_glue_LM_baseline.py create_mlm_train_test_from_clean_dataset.py procesar_por_largo_input.py`
+- Validacion liviana de JSONL para contar filas, cuentos, textos unicos, min_words, word_id y scanpath_text.
+- `find` para confirmar archivos JSON en `/home/tomi/tesis_LIAA/reading-et/results_all_alligned_2_limpio_alineado` y `/home/tomi/tesis_LIAA/reading-et/procesamiento_por_largo_input/data_filtrada`.
+
+Archivos revisados
+------------------
+- `DATASETS_DOWNSTREAM.md`
+- `procesar_por_largo_input.py`
+- `create_mlm_train_test_from_clean_dataset.py`
+- `measured_scanpath_utils.py`
+- `train_mlm_beto_baseline_step7_pretrain.py`
+- `train_mlm_combined_step7.py`
+- `Gazesup_bert_combined_mlm_model.py`
+- `Gazesup_bert_model.py`
+- `train_spanish_downstream_baseline.py`
+- `train_glue_LM_baseline.py`
+- `run_paso7_clean_sentence_split_full.sh`
+- `run_beto_pretraining_8ep_half_loss_curves.sh`
+- `run_all_paso7_paso9_xnli_rioplatense.sh`
+- `/home/tomi/tesis_LIAA/reading-et/procesamiento_por_largo_input/informe_procesamiento_por_largo_input.txt`
+- `/home/tomi/tesis_LIAA/reading-et/mlm_dataset_limpio_train_test/informe_mlm_dataset_limpio_train_test.txt`
+- `/home/tomi/tesis_LIAA/reading-et/procesamiento_por_largo_input_con_fijaciones/alineacion_dataset_limpio_stats.json`
+
+Funciones/scripts identificados
+-------------------------------
+- `build_precomputed_file_train_eval_datasets`: carga Train/Test JSONL precomputados y valida leakage por cuento.
+- `build_measured_single_sentence_features`: tokeniza texto y prepara word ids para MLM/scanpath.
+- `build_static_masked_inputs_and_labels`: genera inputs enmascarados y labels MLM.
+- `train_step7_baseline`: loop de pretraining BETO solo con MLM estandar.
+- `train_step7` en `train_mlm_combined_step7.py`: loop de pretraining BETO + scanpath.
+- `compute_adaptive_scanpath_weight`: calcula lambda adaptativo.
+- `select_scanpath_weight_update_metric`: elige eval/train scanpath loss para actualizar lambda.
+- `Gazesup_BERTForCombinedMaskedLM.forward`: calcula `main_mlm_loss`, `scanpath_mlm_loss` y `total_loss`.
+- `SP_Encoder._prepare_measured_word_scanpath` y `convert_word_pos_seq_to_token_pos_seq`: mapean scanpath palabra -> token/subtoken.
+- `load_xnli_es_dataset`: carga XNLI espanol.
+- `load_rioplatense_hate_binary_dataset`: carga CSVs de hate speech rioplatense.
+
+Salidas generadas
+-----------------
+- `/home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/Pasos/auditoria_pre_corridas_finales/README_auditoria_pre_corridas_finales.txt`
+- `/home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/Pasos/auditoria_pre_corridas_finales/tabla_experimentos_planificados.csv`
+- `/home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/Pasos/auditoria_pre_corridas_finales/checklist_pre_corrida.txt`
+- `/home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/Pasos/auditoria_pre_corridas_finales/comandos_8_corridas.sh`
+- `/home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/Pasos/auditoria_pre_corridas_finales/comandos_y_funciones.txt`
+
+Nota sobre comandos
+-------------------
+`comandos_8_corridas.sh` esta protegido para no correr accidentalmente. Para ejecutar realmente las corridas:
+`RUN_EXPERIMENTS=1 bash Pasos/auditoria_pre_corridas_finales/comandos_8_corridas.sh`

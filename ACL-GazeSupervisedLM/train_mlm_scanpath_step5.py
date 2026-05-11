@@ -15,6 +15,7 @@ from measured_scanpath_utils import build_measured_single_sentence_features, loa
 DEFAULT_OUTPUT_DIR = "paso_5"
 DEFAULT_CHECKPOINT_DIRNAME = "checkpoint_smoke"
 NUM_DEBUG_BATCHES = 2
+DEFAULT_MLM_PROBABILITY = 0.15
 
 
 def parse_args():
@@ -85,7 +86,13 @@ def parse_args():
         "--max_masked_positions",
         type=int,
         default=3,
-        help="Maximum number of non-special tokens masked per example.",
+        help="Deprecated; kept for command compatibility. Dynamic MLM now uses --mlm_probability.",
+    )
+    parser.add_argument(
+        "--mlm_probability",
+        type=float,
+        default=DEFAULT_MLM_PROBABILITY,
+        help="Probability of masking each non-special token for dynamic MLM.",
     )
     parser.add_argument(
         "--remove_punctuation_space",
@@ -114,29 +121,80 @@ def set_seed(seed: int):
         torch.cuda.manual_seed_all(seed)
 
 
-def build_static_masked_inputs_and_labels(input_ids: List[int], attention_mask: List[int], tokenizer, max_masked_positions: int):
-    masked_input_ids = list(input_ids)
-    labels = [-100] * len(input_ids)
-
-    candidate_positions = [
+def _candidate_mask_positions(input_ids: List[int], attention_mask: List[int], tokenizer) -> List[int]:
+    return [
         idx
         for idx, token_id in enumerate(input_ids)
         if attention_mask[idx] == 1 and token_id not in tokenizer.all_special_ids
     ]
+
+
+def build_dynamic_masked_inputs_and_labels(
+    input_ids: List[int],
+    attention_mask: List[int],
+    tokenizer,
+    mlm_probability: float = DEFAULT_MLM_PROBABILITY,
+):
+    masked_input_ids = list(input_ids)
+    labels = [-100] * len(input_ids)
+    vocab_size = getattr(tokenizer, "vocab_size", None) or len(tokenizer)
+
+    candidate_positions = _candidate_mask_positions(input_ids, attention_mask, tokenizer)
     if not candidate_positions:
         return masked_input_ids, labels, []
 
-    if len(candidate_positions) <= max_masked_positions:
-        selected_positions = candidate_positions
-    else:
-        stride = max(1, len(candidate_positions) // max_masked_positions)
-        selected_positions = candidate_positions[::stride][:max_masked_positions]
+    num_to_mask = max(1, int(round(len(candidate_positions) * float(mlm_probability))))
+    num_to_mask = min(num_to_mask, len(candidate_positions))
+    selected_positions = sorted(random.sample(candidate_positions, num_to_mask))
 
     for position in selected_positions:
         labels[position] = input_ids[position]
-        masked_input_ids[position] = tokenizer.mask_token_id
+        replace_probability = random.random()
+        if replace_probability < 0.8:
+            masked_input_ids[position] = tokenizer.mask_token_id
+        elif replace_probability < 0.9:
+            masked_input_ids[position] = random.randrange(vocab_size)
 
     return masked_input_ids, labels, selected_positions
+
+
+def build_static_masked_inputs_and_labels(input_ids: List[int], attention_mask: List[int], tokenizer, max_masked_positions: int):
+    return build_dynamic_masked_inputs_and_labels(
+        input_ids=input_ids,
+        attention_mask=attention_mask,
+        tokenizer=tokenizer,
+        mlm_probability=DEFAULT_MLM_PROBABILITY,
+    )
+
+
+def apply_dynamic_mlm_to_batch(input_ids: torch.Tensor, attention_mask: torch.Tensor, tokenizer, mlm_probability: float):
+    masked_input_ids = input_ids.clone()
+    labels = torch.full_like(input_ids, -100)
+    masked_positions = []
+    vocab_size = getattr(tokenizer, "vocab_size", None) or len(tokenizer)
+
+    for row_index in range(input_ids.shape[0]):
+        row_input_ids = input_ids[row_index].tolist()
+        row_attention_mask = attention_mask[row_index].tolist()
+        candidate_positions = _candidate_mask_positions(row_input_ids, row_attention_mask, tokenizer)
+        if not candidate_positions:
+            masked_positions.append([])
+            continue
+
+        num_to_mask = max(1, int(round(len(candidate_positions) * float(mlm_probability))))
+        num_to_mask = min(num_to_mask, len(candidate_positions))
+        selected_positions = sorted(random.sample(candidate_positions, num_to_mask))
+        masked_positions.append(selected_positions)
+
+        for position in selected_positions:
+            labels[row_index, position] = input_ids[row_index, position]
+            replace_probability = random.random()
+            if replace_probability < 0.8:
+                masked_input_ids[row_index, position] = tokenizer.mask_token_id
+            elif replace_probability < 0.9:
+                masked_input_ids[row_index, position] = random.randrange(vocab_size)
+
+    return masked_input_ids, labels, masked_positions
 
 
 def preprocess_examples(dataset, tokenizer, args):
@@ -150,30 +208,22 @@ def preprocess_examples(dataset, tokenizer, args):
             max_seq_length=args.max_seq_length,
             remove_punctuation_space=args.remove_punctuation_space,
         )
-        masked_input_ids, labels, masked_positions = build_static_masked_inputs_and_labels(
-            input_ids=feature["input_ids"],
-            attention_mask=feature["attention_mask"],
-            tokenizer=tokenizer,
-            max_masked_positions=args.max_masked_positions,
-        )
         processed_examples.append(
             {
                 "example_index": example_index,
                 "text": text,
-                "input_ids": masked_input_ids,
+                "input_ids": feature["input_ids"],
                 "attention_mask": feature["attention_mask"],
                 "token_type_ids": feature["token_type_ids"],
                 "LM_word_ids": feature["word_ids"],
                 "measured_word_ids": feature["measured_word_ids"][0],
                 "measured_sp_len": feature["measured_sp_len"][0],
-                "labels": labels,
-                "masked_positions": masked_positions,
             }
         )
     return processed_examples
 
 
-def collate_measured_mlm_batch(examples: List[Dict[str, Any]], tokenizer):
+def collate_measured_mlm_batch(examples: List[Dict[str, Any]], tokenizer, mlm_probability: float = DEFAULT_MLM_PROBABILITY):
     batch_size = len(examples)
     max_seq_len = max(len(example["input_ids"]) for example in examples)
     max_sp_len = max(len(example["measured_word_ids"]) for example in examples)
@@ -181,14 +231,12 @@ def collate_measured_mlm_batch(examples: List[Dict[str, Any]], tokenizer):
     input_ids = torch.full((batch_size, max_seq_len), tokenizer.pad_token_id, dtype=torch.long)
     attention_mask = torch.zeros((batch_size, max_seq_len), dtype=torch.long)
     token_type_ids = torch.zeros((batch_size, max_seq_len), dtype=torch.long)
-    labels = torch.full((batch_size, max_seq_len), -100, dtype=torch.long)
     lm_word_ids = torch.full((batch_size, max_seq_len), float("nan"), dtype=torch.float64)
     measured_word_ids = torch.zeros((batch_size, max_sp_len), dtype=torch.long)
     measured_sp_len = torch.zeros((batch_size,), dtype=torch.long)
 
     texts = []
     example_indices = []
-    masked_positions = []
 
     for batch_index, example in enumerate(examples):
         seq_len = len(example["input_ids"])
@@ -197,14 +245,19 @@ def collate_measured_mlm_batch(examples: List[Dict[str, Any]], tokenizer):
         input_ids[batch_index, :seq_len] = torch.tensor(example["input_ids"], dtype=torch.long)
         attention_mask[batch_index, :seq_len] = torch.tensor(example["attention_mask"], dtype=torch.long)
         token_type_ids[batch_index, :seq_len] = torch.tensor(example["token_type_ids"], dtype=torch.long)
-        labels[batch_index, :seq_len] = torch.tensor(example["labels"], dtype=torch.long)
         lm_word_ids[batch_index, :seq_len] = torch.tensor(example["LM_word_ids"], dtype=torch.float64)
         measured_word_ids[batch_index, :sp_len] = torch.tensor(example["measured_word_ids"], dtype=torch.long)
         measured_sp_len[batch_index] = int(example["measured_sp_len"])
 
         texts.append(example["text"])
         example_indices.append(int(example["example_index"]))
-        masked_positions.append(list(example["masked_positions"]))
+
+    input_ids, labels, masked_positions = apply_dynamic_mlm_to_batch(
+        input_ids=input_ids,
+        attention_mask=attention_mask,
+        tokenizer=tokenizer,
+        mlm_probability=mlm_probability,
+    )
 
     return {
         "input_ids": input_ids,
@@ -259,7 +312,7 @@ def train_smoke_loop(args):
         processed_examples,
         batch_size=args.per_device_train_batch_size,
         shuffle=False,
-        collate_fn=lambda batch: collate_measured_mlm_batch(batch, tokenizer),
+        collate_fn=lambda batch: collate_measured_mlm_batch(batch, tokenizer, mlm_probability=args.mlm_probability),
     )
 
     model = Gazesup_BERTForMaskedLM.from_pretrained(args.model_name_or_path)

@@ -1,0 +1,60 @@
+{
+  "task_name": "intertass2020",
+  "task_type": "single sentence classification",
+  "text_columns": [
+    "text"
+  ],
+  "metric_name": "macro_f1",
+  "dataset_source": "iberbench/iberbench_all raw parquet: iberlef-tass-sentiment_analysis-2020-spanish",
+  "dataset_note": "La fuente expone solo train; se construye validation con train_test_split estratificado por label usando seed fija.",
+  "num_labels": 3,
+  "label_list": [
+    "0",
+    "1",
+    "2"
+  ],
+  "train_size": 1000,
+  "eval_size": 960,
+  "eval_split_origin": "train_test_split(test_size=0.2, stratify_by_column='label', seed=13)",
+  "intertass_parquet_path": "Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/cache/intertass2020_train.parquet",
+  "label2id": {
+    "0": 0,
+    "1": 1,
+    "2": 2
+  },
+  "id2label": {
+    "0": "0",
+    "1": "1",
+    "2": "2"
+  },
+  "forward_debug": {
+    "tokenizer": "BertTokenizerFast",
+    "model_class": "BertForSequenceClassification",
+    "model_type": "bert",
+    "num_labels": 3,
+    "input_ids_shape": [
+      1,
+      25
+    ],
+    "logits_shape": [
+      1,
+      3
+    ]
+  },
+  "model_name_or_path": "/home/tomi/tesis_LIAA/ACL-GazeSupervisedLM/Pasos/Paso 7 Preentrenamiento BETO Full/best_checkpoint",
+  "tokenizer_class": "BertTokenizerFast",
+  "output_dir": "Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020",
+  "max_train_samples": 1000,
+  "max_eval_samples": 1000,
+  "num_train_epochs": 10,
+  "per_device_train_batch_size": 8,
+  "per_device_eval_batch_size": 8,
+  "max_seq_length": 128,
+  "learning_rate": 2e-05,
+  "seed": 13,
+  "evaluation_strategy": "epoch",
+  "save_strategy": "epoch",
+  "load_best_model_at_end": true,
+  "save_total_limit": 1,
+  "best_model_checkpoint": "Pasos/paso_9_serio_beto_full_low_resource_k1000_seed13/intertass2020/checkpoint-1125"
+}

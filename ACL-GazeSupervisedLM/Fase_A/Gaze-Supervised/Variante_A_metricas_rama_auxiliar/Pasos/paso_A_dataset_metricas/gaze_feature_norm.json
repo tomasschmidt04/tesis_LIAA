@@ -1,0 +1,54 @@
+{
+  "feature_names": [
+    "FFD",
+    "TRT",
+    "nFix"
+  ],
+  "mean": [
+    128.82810164424515,
+    238.3273542600897,
+    1.2869955156950672
+  ],
+  "std": [
+    108.75382735865247,
+    207.9208531629177,
+    1.0859180578572625
+  ],
+  "valid_counts": [
+    669,
+    669,
+    669
+  ],
+  "total_examples": 87,
+  "total_values": 2007,
+  "replaced_nonfinite": 0,
+  "feature_names_seen": [
+    "FC",
+    "FFD",
+    "FPRT",
+    "LS",
+    "RC",
+    "RPD",
+    "RR",
+    "RRT",
+    "SFD",
+    "SPRT",
+    "TFD"
+  ],
+  "mappings_seen": [
+    {
+      "FFD": {
+        "source_name": "FFD",
+        "source_index": 0
+      },
+      "TRT": {
+        "source_name": "TFD",
+        "source_index": 4
+      },
+      "nFix": {
+        "source_name": "FC",
+        "source_index": 7
+      }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+./run_beto_pretraining_8ep_half_loss_curves.sh
+./run_step9_rioplatense_hate_binary_low_resource.sh
+./run_all_half_pretraining_and_rioplatense.sh
+./run_all_paso7_paso9_xnli_rioplatense.sh

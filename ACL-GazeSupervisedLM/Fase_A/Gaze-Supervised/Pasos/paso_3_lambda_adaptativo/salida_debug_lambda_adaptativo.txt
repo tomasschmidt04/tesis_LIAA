@@ -1,0 +1,20 @@
+PASO 3 - Debug lambda adaptativo scanpath
+=========================================
+
+Tabla de evolucion por epoch
+epoch | loss_scanpath_usada | progress | lambda_scanpath_t | lambda_scanpath_next | loss_mlm | loss_scanpath | loss_total | metric
+1 | 7.026717 | 0.000000 | 0.050000 | 0.050000 | 6.951346 | 7.026717 | 7.302682 | train_loss_scanpath_mean
+warning epoch 1: warmup activo: epoch 1 <= scanpath_weight_warmup_epochs=1; lambda_next queda en scanpath_weight_min.
+2 | 6.979621 | 0.006702 | 0.050000 | 0.053016 | 6.693442 | 6.979621 | 7.042423 | train_loss_scanpath_mean
+3 | 6.920250 | 0.015152 | 0.053016 | 0.056818 | 6.499698 | 6.920250 | 6.866583 | train_loss_scanpath_mean
+
+Validaciones esperadas
+- adaptive_scanpath_weight: True
+- lambda_min: 0.05
+- lambda_max: 0.5
+- warmup_epochs: 1
+- metric_choice: train_loss_scanpath_mean
+- lambda_log_csv: Pasos/paso_3_lambda_adaptativo/lambda_scanpath_log.csv
+- lambda se actualiza solo con promedios por epoch, no por batch.
+- si current_scanpath_loss empeora respecto de initial_scanpath_loss, progress queda clipeado en 0.
+- si no hay eval_loss_scanpath en modo auto, se usa train_loss_scanpath_mean y se deja warning.

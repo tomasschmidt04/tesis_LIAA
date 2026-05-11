@@ -1,0 +1,16 @@
+COMANDOS Y FUNCIONES - PASO 7 BASELINE
+=====================================
+
+Comando ejecutado
+python train_mlm_beto_baseline_step7_pretrain.py --measured_scanpath_file "/home/tomi/tesis_LIAA/reading-et/aligned_output/aligned_scanpaths.jsonl" --model_name_or_path hf-internal-testing/tiny-random-bert --measured_text_field text --measured_word_id_field word_id --split train --output_dir "results/smoke_gpu_pretraining/beto_baseline" --max_seq_length 32 --max_train_samples 2 --max_eval_samples 1 --per_device_train_batch_size 1 --per_device_eval_batch_size 1 --num_train_epochs 1 --learning_rate 5e-05 --max_masked_positions 3 --save_every_epoch False --seed 13
+
+Funciones / modulos usados
+- measured_scanpath_utils.load_measured_scanpath_dataset
+- measured_scanpath_utils.build_measured_single_sentence_features
+- train_mlm_scanpath_step5.build_static_masked_inputs_and_labels
+- transformers.AutoTokenizer.from_pretrained
+- transformers.AutoModelForMaskedLM.from_pretrained
+- torch.optim.AdamW
+- model.save_pretrained
+- tokenizer.save_pretrained
+- loss_curve_utils.write_loss_curve_rows
